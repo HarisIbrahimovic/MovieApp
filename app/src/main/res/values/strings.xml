@@ -1,0 +1,38 @@
+<resources>
+    <string name="app_name">MovieApp</string>
+    <string name="my_name">Haris Ibrahimović</string>
+    <string name="from">from</string>
+    <string name="movieverse">Movieverse</string>
+    <string name="todo">TODO</string>
+    <string name="sign_in_text">Sign In</string>
+    <string name="sign_in">SIGN IN</string>
+    <string name="register_now_text">REGISTER NOW</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="every">Every</string>
+    <string name="show_and_more">show and more</string>
+    <string name="movie_tv">movie, TV</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in_no_caps">Sign in</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="sign_up_no_caps">Sign up</string>
+    <string name="already_have_an_account_sign_in">Already have an account? Sign in!</string>
+    <string name="login">Login</string>
+    <string name="profile">Profile</string>
+    <string name="now_playing">Now playing</string>
+    <string name="search">Search</string>
+    <string name="home">Home</string>
+    <string name="select_for_yourself">Select for yourself</string>
+    <string name="watchlist">+ Watchlist</string>
+    <string name="popular_movies">Popular Movies</string>
+    <string name="popular_tv_shows">Popular TV Shows</string>
+    <string name="movie">Movie</string>
+    <string name="verse">verse</string>
+    <string name="select_genre">Select genre</string>
+    <string name="story_line">Story line</string>
+    <string name="similar_movies">Similar movies</string>
+    <string name="star_cast">Star Cast</string>
+</resources>

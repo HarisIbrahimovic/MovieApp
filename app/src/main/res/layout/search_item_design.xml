@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="15dp"
+    android:layout_width="match_parent"
+    android:layout_height="170dp">
+
+
+    <ImageView
+        android:id="@+id/mediaImageVertical"
+        android:layout_width="125dp"
+        android:layout_height="170dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/media_name_v"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="-3dp"
+        android:fontFamily="@font/didact_gothic"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/mediaImageVertical"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RatingBar
+        android:id="@+id/ratingBarVertical"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:numStars="5"
+        android:layout_marginTop="3dp"
+        android:progressBackgroundTint="#9C9B9B"
+        android:progressTint="@color/white"
+        android:scaleX="0.5"
+        android:scaleY="0.5"
+        android:stepSize="0.5"
+        android:transformPivotX="0dp"
+        android:transformPivotY="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.583"
+        app:layout_constraintStart_toEndOf="@+id/mediaImageVertical"
+        app:layout_constraintTop_toBottomOf="@+id/media_name_v"
+        app:layout_goneMarginStart="10dp" />
+
+    <TextView
+        android:id="@+id/overViewVertical"
+        android:layout_width="230dp"
+        android:layout_height="95dp"
+        android:layout_marginTop="-15dp"
+        android:layout_marginEnd="5dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/didact_gothic"
+        android:justificationMode="inter_word"
+        android:maxLines="4"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="@+id/mediaImageVertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.512"
+        app:layout_constraintStart_toEndOf="@+id/mediaImageVertical"
+        app:layout_constraintTop_toBottomOf="@+id/ratingBarVertical"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/darkerGray"
+        android:src="@drawable/now_playing_icon_solid"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#FF5722" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "426307198691",
+    "firebase_url": "https://movieapp-25e7e-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "movieapp-25e7e",
+    "storage_bucket": "movieapp-25e7e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426307198691:android:126ff25f415adef05f2fd6",
+        "android_client_info": {
+          "package_name": "com.sirahi.movieapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426307198691-28bl18tdol7a8g6guhm4rqn4rep9udtt.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmi6yZwz5fhIJmn6hClNia3i07chgifaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426307198691-28bl18tdol7a8g6guhm4rqn4rep9udtt.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

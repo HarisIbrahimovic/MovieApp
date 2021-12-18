@@ -6,22 +6,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentHomeBinding
 import com.sirahi.movieapp.presentation.MenuViewModel
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
-import com.sirahi.movieapp.view.activity.MovieDetailsActivity
 import com.sirahi.movieapp.view.adapters.GenreAdapter
 import com.sirahi.movieapp.view.adapters.MovieResultAdapter
 import com.sirahi.movieapp.view.adapters.TvResultAdapter
 import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.ClickListener {
 
-    private lateinit var viewModel : MenuViewModel
+    private val viewModel : MenuViewModel  by activityViewModels()
     private var _binding  : FragmentHomeBinding?=null
     private val binding get() = _binding!!
 
@@ -29,6 +33,9 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
     private lateinit var discoverAdapter:VerticalMediaAdapter
     private lateinit var tvAdapter:TvResultAdapter
     private lateinit var genreAdapter:GenreAdapter
+
+
+    var navController: NavController? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -40,7 +47,7 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(MenuViewModel::class.java)
+        navController =  Navigation.findNavController(view)
         mAdapter = MovieResultAdapter(requireContext(),this)
         tvAdapter = TvResultAdapter(requireContext())
         genreAdapter = GenreAdapter(requireContext(),this)
@@ -128,9 +135,8 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
     }
 
     override fun onMovieClikced(id: Int) {
-        val intent = Intent(requireActivity(),MovieDetailsActivity::class.java)
-        intent.putExtra("id",id)
-        startActivity(intent)
+        val bundle = bundleOf("movieId" to id)
+        navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
     }
 
     override fun genreClicked(id: Int) {

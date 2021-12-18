@@ -2,13 +2,13 @@ package com.sirahi.movieapp.view.fragment.menu
 
 import android.app.AlertDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.AdvancedSearchBinding
@@ -17,13 +17,15 @@ import com.sirahi.movieapp.presentation.MenuViewModel
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
 import com.sirahi.movieapp.view.adapters.GenreAdapter
 import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SearchFragment : Fragment(),GenreAdapter.ClickListener {
 
     private var _binding:FragmentSearchBinding?=null
     private val binding get()=_binding!!
 
-    private lateinit var viewModel:MenuViewModel
+    private val viewModel:MenuViewModel by activityViewModels()
     private lateinit var vAdapter:VerticalMediaAdapter
     private lateinit var gAdapter: GenreAdapter
 
@@ -40,7 +42,6 @@ class SearchFragment : Fragment(),GenreAdapter.ClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(MenuViewModel::class.java)
         viewModel.clearGenre()
         vAdapter = VerticalMediaAdapter(requireContext())
         gAdapter = GenreAdapter(requireContext(),this)

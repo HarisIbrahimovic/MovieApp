@@ -4,7 +4,7 @@ import com.sirahi.movieapp.data.local.entity.MediaResultEntity
 import com.sirahi.movieapp.model.MediaResult
 
 data class TVResultDto(
-    val backdrop_path: String,
+    var backdrop_path: String?,
     var first_air_date: String?,
     val genre_ids: List<Int>,
     val id: Int,
@@ -27,7 +27,8 @@ data class TVResultDto(
                 title = name,
                 score = vote_average,
                 releaseDate = first_air_date!!,
-                overview = overview!!
+                overview = overview!!,
+                backdropPath = backdrop_path!!
         )
     }
 
@@ -39,7 +40,8 @@ data class TVResultDto(
             score=vote_average,
             overview=overview!!,
             releaseDate=first_air_date!!,
-            title = name
+            title = name,
+            backdropPath = backdrop_path!!
         )
     }
 
@@ -47,5 +49,6 @@ data class TVResultDto(
         if (poster_path==null)poster_path="No photo"
         if (first_air_date==null)first_air_date="No date"
         if (overview==null)overview="No overview"
+        if (backdrop_path==null)backdrop_path="No photo"
     }
 }

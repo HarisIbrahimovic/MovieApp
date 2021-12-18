@@ -1,24 +1,30 @@
 package com.sirahi.movieapp.view.fragment.signup
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentLoginBinding
 import com.sirahi.movieapp.presentation.SignUpViewModel
 import com.sirahi.movieapp.presentation.util.Constants
 import com.sirahi.movieapp.presentation.util.RegistrationStatus
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class LoginFragment : Fragment() {
 
     private var _binding : FragmentLoginBinding? = null
     private val binding get() = _binding!!
-    private lateinit var viewModel: SignUpViewModel
+    private val viewModel: SignUpViewModel by activityViewModels()
+
+    var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +37,7 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+        navController = Navigation.findNavController(view)
         observe()
         onClicks()
     }
@@ -47,7 +53,7 @@ class LoginFragment : Fragment() {
                     viewModel.setStatusToPending()
                 }
                 is RegistrationStatus.Failure->{
-                    when(status.error.field){
+                    when(status.error?.field){
                         "email"-> binding.emailInputLayout.error=status.error.mess
                         "password" -> binding.passwordInputLayout.error=status.error.mess
                         else -> Toast.makeText(requireContext(), Constants.UNK_ERROR, Toast.LENGTH_SHORT).show()

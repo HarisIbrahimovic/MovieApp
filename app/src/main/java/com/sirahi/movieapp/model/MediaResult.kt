@@ -7,5 +7,6 @@ data class MediaResult (
         val title : String,
         val score:Double,
         val overview:String,
-        val releaseDate:String
+        val releaseDate:String,
+        val backdropPath: String
 )

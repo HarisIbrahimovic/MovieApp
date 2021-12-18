@@ -1,25 +1,26 @@
 package com.sirahi.movieapp.view.fragment.signup
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentRegisterBinding
 import com.sirahi.movieapp.presentation.SignUpViewModel
 import com.sirahi.movieapp.presentation.util.Constants
 import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.presentation.util.SignUpFragmentStatus
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class RegisterFragment : Fragment() {
 
     private var _binding:FragmentRegisterBinding?=null
     private val binding get() = _binding!!
-    private lateinit var viewModel: SignUpViewModel
+    private val viewModel: SignUpViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,7 +32,6 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
 
         observe()
         onClick()
@@ -46,7 +46,7 @@ class RegisterFragment : Fragment() {
             )
         }
         binding.signInTextRegister.setOnClickListener {
-            viewModel.setFragment(SignUpFragmentStatus.LOGIN)
+          //  viewModel.setFragment(SignUpFragmentStatus.LOGIN)
         }
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressed()
@@ -65,7 +65,7 @@ class RegisterFragment : Fragment() {
                     viewModel.setStatusToPending()
                 }
                 is RegistrationStatus.Failure->{
-                    when(status.error.field){
+                    when(status.error?.field){
                         "username"-> binding.userNameInputLayout.error=status.error.mess
                         "email"-> binding.emailInputLayout.error=status.error.mess
                         "password" -> binding.passwordInputLayout.error=status.error.mess

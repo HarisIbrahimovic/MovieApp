@@ -6,23 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sirahi.movieapp.model.Genre
 import com.sirahi.movieapp.model.MediaResult
-import com.sirahi.movieapp.presentation.util.MenuStatus
 import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
 import com.sirahi.movieapp.repository.MenuRepository
-import com.sirahi.movieapp.repository.default.DefaultMenuRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MenuViewModel: ViewModel() {
-
-    private var repository: MenuRepository = DefaultMenuRepository()
-
-    private val _fragmentStatus = MutableLiveData<MenuStatus>()
-    val fragmentStatus:LiveData<MenuStatus> = _fragmentStatus
-
+@HiltViewModel
+class MenuViewModel
+    @Inject constructor(private val repository: MenuRepository)
+    : ViewModel() {
 
     private val _popularMoviesData = MutableLiveData<IncomingMediaData>()
     val popularMoviesData:LiveData<IncomingMediaData> = _popularMoviesData
@@ -50,7 +47,6 @@ class MenuViewModel: ViewModel() {
 
     init {
         if(_popularMoviesData.value==null){
-            _fragmentStatus.value=MenuStatus.HOME
             getPopularMovies()
             getPopularTV()
             setGenreList()
@@ -116,9 +112,6 @@ class MenuViewModel: ViewModel() {
     }
 
 
-    fun setFragmentStatus(status:MenuStatus){
-        _fragmentStatus.value = status
-    }
 
     fun setSelectedGenre(position:Int){
         list[lastSelectedGenre].clicked=false

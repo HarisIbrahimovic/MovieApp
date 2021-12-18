@@ -29,26 +29,4 @@ abstract class LocalDatabase :RoomDatabase(){
     abstract fun mediaResultDao(): MediaResultDao
     abstract fun movieDetailsDao(): MovieDetailsDao
     abstract fun tvDetailsDao(): TvDetailsDao
-
-    companion object{
-        private var instance: LocalDatabase?=null
-
-        fun setInstance(context: Context){
-            instance= Room.databaseBuilder(context, LocalDatabase::class.java, "movie_database")
-                    .fallbackToDestructiveMigration()
-                    .addCallback(roomCallBack)
-                    .build()
-        }
-
-        fun getInstance()= instance
-
-        private val roomCallBack: RoomDatabase.Callback = object : RoomDatabase.Callback() {
-            override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
-                super.onCreate(db)
-            }
-        }
-    }
-
-
-
 }

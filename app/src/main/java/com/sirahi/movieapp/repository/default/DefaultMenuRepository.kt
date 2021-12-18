@@ -1,7 +1,7 @@
 package com.sirahi.movieapp.repository.default
 
-import com.sirahi.movieapp.data.local.LocalDatabase
-import com.sirahi.movieapp.data.remote.RetrofitInstance
+import com.sirahi.movieapp.data.local.dao.MediaResultDao
+import com.sirahi.movieapp.data.remote.ApiService
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.Genre
 import com.sirahi.movieapp.model.MediaResult
@@ -9,11 +9,13 @@ import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.repository.MenuRepository
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
-class  DefaultMenuRepository :MenuRepository{
+class  DefaultMenuRepository
+    @Inject
+    constructor(private val mediaDao: MediaResultDao, private val apiService: ApiService)
+    :MenuRepository{
 
-    private val mediaDao = LocalDatabase.getInstance()!!.mediaResultDao()
-    private val apiService = RetrofitInstance.api
 
     override suspend fun getMovies(category:String): Response<List<MediaResult>?> {
         var mediaResult=mediaDao.getMediaResult("movie").map { it.toMediaResult() }
@@ -39,10 +41,11 @@ class  DefaultMenuRepository :MenuRepository{
             val remoteMediaResult = apiService.getTV(category,ApiConstants.API_KEY)
             val listMediaResult = remoteMediaResult.body()?.results
                 if(listMediaResult!=null){
-                mediaDao.deleteAllTV()
-                mediaDao.insertMediaResult(listMediaResult.map { it.toMediaResultEntity("popular","TV") })
-                mediaResult=mediaDao.getMediaResult("TV").map { it.toMediaResult() }
-                Response.Success(mediaResult)
+                    mediaDao.deleteAllTV()
+                    listMediaResult.map{it.checkNull()}
+                    mediaDao.insertMediaResult(listMediaResult.map { it.toMediaResultEntity("popular","TV") })
+                    mediaResult=mediaDao.getMediaResult("TV").map { it.toMediaResult() }
+                    Response.Success(mediaResult)
                 }
             else
                 Response.Error(mediaResult,"Unknown error occurred")

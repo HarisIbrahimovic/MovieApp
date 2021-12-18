@@ -35,4 +35,6 @@
     <string name="story_line">Story line</string>
     <string name="similar_movies">Similar movies</string>
     <string name="star_cast">Star Cast</string>
+    <string name="overview">Overview</string>
+    <string name="stars">Stars</string>
 </resources>

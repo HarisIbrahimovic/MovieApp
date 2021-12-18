@@ -30,11 +30,12 @@ data class MovieDetailsDto(
         return MovieDetailsEntity(
             id=id,
             voteAverage = vote_average,
+            backdropPath = backdrop_path,
             title = title,
             runtime = runtime,
             posterPath = poster_path,
             releaseDate = release_date,
-            overview = overview
+            overview = overview,
         )
     }
 }

@@ -6,10 +6,13 @@ import com.google.firebase.database.FirebaseDatabase
 import com.sirahi.movieapp.presentation.util.RegError
 import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.repository.SignUpRepository
+import javax.inject.Inject
 
-class DefaultSignUpRepository :SignUpRepository{
+class DefaultSignUpRepository
+    @Inject
+    constructor(private val auth: FirebaseAuth)
+    :SignUpRepository{
 
-    private val auth = FirebaseAuth.getInstance()
     private val signInLiveData = MutableLiveData<RegistrationStatus>()
     override fun getRegistrationLiveData()=signInLiveData
 

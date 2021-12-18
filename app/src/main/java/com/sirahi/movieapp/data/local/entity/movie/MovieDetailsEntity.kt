@@ -13,11 +13,12 @@ data class MovieDetailsEntity (
     val title: String,
     val runtime: Int,
     val posterPath: String,
+    val backdropPath: String,
     val overview: String,
     ){
         fun toMovieDetails():MovieDetails{
             return MovieDetails(
-                releaseDate, voteAverage, title, runtime, posterPath, overview
+                releaseDate, voteAverage, title, runtime, posterPath, overview,backdropPath
             )
         }
 }

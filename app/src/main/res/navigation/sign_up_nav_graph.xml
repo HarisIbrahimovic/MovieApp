@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/sign_up_nav_graph"
+    app:startDestination="@id/startLoginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.sirahi.movieapp.view.fragment.signup.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" />
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.sirahi.movieapp.view.fragment.signup.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" />
+    <fragment
+        android:id="@+id/startLoginFragment"
+        android:name="com.sirahi.movieapp.view.fragment.signup.StartLoginFragment"
+        android:label="fragment_start_login"
+        tools:layout="@layout/fragment_start_login" >
+        <action
+            android:id="@+id/action_startLoginFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_startLoginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+    </fragment>
+</navigation>

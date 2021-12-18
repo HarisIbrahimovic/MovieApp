@@ -1,21 +1,27 @@
 package com.sirahi.movieapp.view.fragment.signup
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentStartLoginBinding
 import com.sirahi.movieapp.presentation.SignUpViewModel
 import com.sirahi.movieapp.presentation.util.SignUpFragmentStatus
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class StartLoginFragment : Fragment() {
 
-    private lateinit var viewModel:SignUpViewModel
+    private val viewModel:SignUpViewModel by activityViewModels()
     private var _binding: FragmentStartLoginBinding?=null
     private val binding get()= _binding!!
+    var navController: NavController? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -27,16 +33,16 @@ class StartLoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel= ViewModelProvider(requireActivity()).get(SignUpViewModel::class.java)
+        navController = Navigation.findNavController(view)
         onClicks()
     }
 
     private fun onClicks() {
         binding.registerNowButton.setOnClickListener {
-            viewModel.setFragment(SignUpFragmentStatus.REGISTER)
+            navController?.navigate(R.id.action_startLoginFragment_to_registerFragment)
         }
         binding.signInText.setOnClickListener {
-            viewModel.setFragment(SignUpFragmentStatus.LOGIN)
+            navController?.navigate(R.id.action_startLoginFragment_to_loginFragment)
         }
     }
 

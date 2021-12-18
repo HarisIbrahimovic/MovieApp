@@ -8,12 +8,15 @@ import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieCast
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieDetails
 import com.sirahi.movieapp.repository.DetailMovieRepository
-import com.sirahi.movieapp.repository.default.DefaultMovieDetailsRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MovieDetailsViewModel:ViewModel(){
-    private val repository:DetailMovieRepository = DefaultMovieDetailsRepository()
+@HiltViewModel
+class MovieDetailsViewModel
+    @Inject constructor (private val repository:DetailMovieRepository)
+    :ViewModel(){
 
     private val _movieDetails = MutableLiveData<IncomingMovieDetails>()
     private val _movieCast = MutableLiveData<IncomingMovieCast>()

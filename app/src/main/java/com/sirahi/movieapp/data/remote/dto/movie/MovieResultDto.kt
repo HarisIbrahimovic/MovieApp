@@ -5,7 +5,7 @@ import com.sirahi.movieapp.model.MediaResult
 
 data class MovieResultDto(
     val adult: Boolean,
-    val backdrop_path: String,
+    var backdrop_path: String?,
     val genre_ids: List<Int>,
     val id: Int,
     val original_language: String,
@@ -28,7 +28,8 @@ data class MovieResultDto(
             title = title,
             score = vote_average,
             overview=overview!!,
-            releaseDate=release_date!!
+            releaseDate=release_date!!,
+            backdropPath = backdrop_path!!
         )
     }
 
@@ -40,7 +41,8 @@ data class MovieResultDto(
             score=vote_average,
             overview=overview!!,
             releaseDate=release_date!!,
-            title = title
+            title = title,
+            backdropPath = backdrop_path!!
         )
     }
 
@@ -48,5 +50,6 @@ data class MovieResultDto(
         if (poster_path==null)poster_path="No photo"
         if (release_date==null)release_date="No date"
         if (overview==null)overview="No overview"
+        if (backdrop_path==null)backdrop_path="No photo"
     }
 }

@@ -1,24 +1,27 @@
 package com.sirahi.movieapp.repository.default
 
 import com.bumptech.glide.load.HttpException
-import com.sirahi.movieapp.data.local.LocalDatabase
 import com.sirahi.movieapp.data.local.dao.CastDao
 import com.sirahi.movieapp.data.local.dao.MovieDetailsDao
-import com.sirahi.movieapp.data.remote.RetrofitInstance
+import com.sirahi.movieapp.data.remote.ApiService
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.movie.MovieCast
 import com.sirahi.movieapp.model.movie.MovieDetails
 import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.repository.DetailMovieRepository
 import java.io.IOException
+import javax.inject.Inject
 
-class DefaultMovieDetailsRepository: DetailMovieRepository {
-    private val apiService = RetrofitInstance.api
-    private val movieDetailsDao:MovieDetailsDao = LocalDatabase.getInstance()!!.movieDetailsDao()
-    private val castDao:CastDao = LocalDatabase.getInstance()!!.castDao()
+class DefaultMovieDetailsRepository
+    @Inject
+    constructor(
+        private val movieDetailsDao:MovieDetailsDao,
+        private val castDao:CastDao,
+        private val apiService: ApiService
+        ) : DetailMovieRepository {
 
     override suspend fun getMovieDetails(id: Int): Response<MovieDetails> {
-        var detailsResult:MovieDetails = movieDetailsDao.getMovieData(id).toMovieDetails()
+        var detailsResult:MovieDetails = movieDetailsDao.getMovieData(id)?.toMovieDetails()
         return try {
             val response = apiService.getSingleMovie(id.toString(),ApiConstants.API_KEY)
             val result = response.body()?.toMovieDetailsEntity()

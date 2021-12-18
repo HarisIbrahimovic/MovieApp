@@ -7,4 +7,5 @@ data class MovieDetails(
     val runtime: Int,
     val posterPath: String,
     val overview: String,
+    val backdropPath: String
 )

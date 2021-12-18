@@ -15,7 +15,8 @@ data class MediaResultEntity(
     val type : String,
     val title : String,
     val overview:String,
-    val releaseDate:String
+    val releaseDate:String,
+    val backdropPath:String
 ){
     fun toMediaResult() : MediaResult {
         return MediaResult(
@@ -25,7 +26,8 @@ data class MediaResultEntity(
             title = title,
             score=score,
             overview=overview,
-            releaseDate= releaseDate
+            releaseDate= releaseDate,
+            backdropPath =backdropPath
         )
     }
 

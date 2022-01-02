@@ -1,6 +1,9 @@
 package com.sirahi.movieapp.repository.default
 
 import com.bumptech.glide.load.HttpException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
+import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.data.local.dao.CastDao
 import com.sirahi.movieapp.data.local.dao.MovieDetailsDao
 import com.sirahi.movieapp.data.remote.ApiService
@@ -58,6 +61,12 @@ class DefaultMovieDetailsRepository
             }catch (e:IOException){
             Response.Error(cast,"Check your internet connection")
         }
+    }
+
+    override fun addToFavorites(mediaItem:MediaItem) {
+        val auth = FirebaseAuth.getInstance()
+        val dbRef = FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
+        dbRef.child("FavoritesMovies").child(mediaItem.id.toString()).setValue(mediaItem)
     }
 
 

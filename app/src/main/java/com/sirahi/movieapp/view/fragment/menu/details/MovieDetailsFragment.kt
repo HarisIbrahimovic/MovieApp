@@ -1,20 +1,20 @@
 package com.sirahi.movieapp.view.fragment.menu.details
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.MenuInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.activity.viewModels
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.sirahi.movieapp.R
-import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.databinding.FragmentMovieDetailsBinding
-import com.sirahi.movieapp.databinding.FragmentRegisterBinding
 import com.sirahi.movieapp.presentation.MovieDetailsViewModel
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieCast
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieDetails
@@ -22,85 +22,90 @@ import com.sirahi.movieapp.view.adapters.MovieCastAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MovieDetailsFragment : Fragment() {
+class MovieDetailsFragment : Fragment(),MovieCastAdapter.ActorClickListener{
 
     private val viewModel: MovieDetailsViewModel by viewModels()
+    private lateinit var binding: FragmentMovieDetailsBinding
+    private var navController: NavController? = null
+    private lateinit var popupMenu:PopupMenu
+
     private lateinit var castAdapter:MovieCastAdapter
-    private var _binding: FragmentMovieDetailsBinding?=null
-    private val binding get() = _binding!!
+    private var movieImageSrc:String = "No image"
+    private var movieScore:Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentMovieDetailsBinding.inflate(inflater,container,false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_movie_details,container,false)
+        binding.lifecycleOwner=this
+        binding.viewModel=viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        navController =  Navigation.findNavController(view)
         arguments?.getInt("movieId")?.let { viewModel.init(it) }
-        castAdapter = MovieCastAdapter(requireContext())
-        binding.starsRecyclerView.apply {
-            layoutManager = LinearLayoutManager(requireContext(),
-                LinearLayoutManager.HORIZONTAL,false)
-            adapter = castAdapter
+        castAdapter = MovieCastAdapter(this,requireContext())
+        binding.adapter = castAdapter
+
+        setPopupMenu()
+
+        binding.menuMovieDetails.setOnClickListener {
+            popupMenu.show()
         }
 
+        viewModel.movieDetails.observe(viewLifecycleOwner, {
+            if (it is IncomingMovieDetails.Success) {
+                movieImageSrc = it.data?.posterPath ?: "No Image"
+                movieScore = it.data?.voteAverage ?: 0.0
+            }
+        })
 
         viewModel.movieCast.observe(viewLifecycleOwner,{incomingData->
             when(incomingData){
-                is IncomingMovieCast.Loading->{}
-                is IncomingMovieCast.Success->{
-                    castAdapter.setList(incomingData.data)
-                }
-                is IncomingMovieCast.Failure->{
-                    incomingData.data.let {
-                        castAdapter.setList(it)
-                    }
-                }
+                is IncomingMovieCast.Success->castAdapter.setList(incomingData.data)
+                is IncomingMovieCast.Failure->incomingData.data.let { castAdapter.setList(it) }
+                else->Unit
             }
         })
+    }
 
-        viewModel.movieDetails.observe(viewLifecycleOwner,{incomingData->
-            when(incomingData){
-                is IncomingMovieDetails.Loading->{}
-                is IncomingMovieDetails.Success->{
-                    val data = incomingData.data
-                    binding.movieTitleDetails.text=data.title
-                    binding.movieFullNameDetails.text=data.title
-                    binding.movieOverview.text = data.overview
-                    binding.ratingBar.progress = data.voteAverage.toInt()
-                    Glide.with(requireContext()).load(ApiConstants.URL_START+data.posterPath)
-                        .apply(RequestOptions.centerCropTransform())
-                        .into(binding.movieImage)
-                    Glide.with(requireContext()).load(ApiConstants.URL_START+data.backdropPath)
-                        .apply(RequestOptions.centerCropTransform())
-                        .into(binding.backdropPathImage)
+    private fun setPopupMenu() {
+        popupMenu = PopupMenu(requireContext(),binding.menuMovieDetails)
+        val inflater:MenuInflater = popupMenu.menuInflater
+        inflater.inflate(R.menu.media_menu,popupMenu.menu)
+        popupMenu.setOnMenuItemClickListener {
+            when(it.itemId){
+                R.id.addRating->{
+                    val bundle = bundleOf("movieId" to arguments?.getInt("movieId"), "movieName" to binding.movieFullNameDetails.text.toString())
+                    navController?.navigate(R.id.action_movieDetailsFragment_to_ratingFragment, bundle)
+                    true
                 }
-                is IncomingMovieDetails.Failure->{
-                    incomingData.data.let {
-                        binding.movieTitleDetails.text=it?.title
-                        binding.movieFullNameDetails.text=it?.title
-                        binding.movieOverview.text = it?.overview
-                        binding.ratingBar.progress = it?.voteAverage?.toInt() ?: 0
-                        Glide.with(requireContext()).load(ApiConstants.URL_START+it?.posterPath)
-                            .apply(RequestOptions.centerCropTransform())
-                            .into(binding.movieImage)
-                        Glide.with(requireContext()).load(ApiConstants.URL_START+it?.backdropPath)
-                            .apply(RequestOptions.centerCropTransform())
-                            .into(binding.backdropPathImage)
-                    }
-                    Toast.makeText(requireContext(),incomingData.error, Toast.LENGTH_SHORT).show()
+                R.id.addToFavorites->{
+                    addToFavorites()
+                    true
                 }
+                else-> false
             }
-        })
-
+        }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
+    private fun addToFavorites() {
+        viewModel.addMovieToFavorites(
+                arguments?.getInt("movieId") ?: 0,
+                    binding.movieFullNameDetails.text.toString(),
+                    movieScore,
+                    movieImageSrc
+        )
+        Toast.makeText(requireContext(),"Successfully added",Toast.LENGTH_SHORT).show()
     }
+
+
+    override fun onActorClicked(id: Int) {
+        val bundle = bundleOf("actorId" to id)
+        navController?.navigate(R.id.action_movieDetailsFragment_to_actorDetailsFragment, bundle)
+    }
+
 }

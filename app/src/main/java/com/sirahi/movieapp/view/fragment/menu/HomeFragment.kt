@@ -1,6 +1,5 @@
 package com.sirahi.movieapp.view.fragment.menu
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,7 +22,7 @@ import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.ClickListener {
+class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.ClickListener,TvResultAdapter.TvClickListener,VerticalMediaAdapter.OnVerticalMediaClicked{
 
     private val viewModel : MenuViewModel  by activityViewModels()
     private var _binding  : FragmentHomeBinding?=null
@@ -35,7 +34,7 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
     private lateinit var genreAdapter:GenreAdapter
 
 
-    var navController: NavController? = null
+    private var navController: NavController? = null
 
     override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -49,9 +48,9 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
         super.onViewCreated(view, savedInstanceState)
         navController =  Navigation.findNavController(view)
         mAdapter = MovieResultAdapter(requireContext(),this)
-        tvAdapter = TvResultAdapter(requireContext())
+        tvAdapter = TvResultAdapter(requireContext(),this)
         genreAdapter = GenreAdapter(requireContext(),this)
-        discoverAdapter = VerticalMediaAdapter(requireContext())
+        discoverAdapter = VerticalMediaAdapter(requireContext(),this)
         setUpRecyclerViews()
         observe()
     }
@@ -143,4 +142,18 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
         viewModel.setSelectedGenre(id)
     }
 
+    override fun onTvClicked(id: Int) {
+        val bundle = bundleOf("tvId" to id)
+        navController?.navigate(R.id.action_homeFragment_to_TVDetailsFragment, bundle)
+    }
+
+    override fun onVerticalItemClicked(id: Int, type: String) {
+        if(type!="TV"){
+            val bundle = bundleOf("movieId" to id)
+            navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
+        }else{
+            val bundle = bundleOf("tvId" to id)
+            navController?.navigate(R.id.action_homeFragment_to_TVDetailsFragment, bundle)
+        }
+    }
 }

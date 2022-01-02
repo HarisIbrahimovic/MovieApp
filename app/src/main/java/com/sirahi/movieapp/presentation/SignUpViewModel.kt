@@ -74,3 +74,4 @@ class SignUpViewModel @Inject constructor(private var repository: SignUpReposito
     }
 
 }
+

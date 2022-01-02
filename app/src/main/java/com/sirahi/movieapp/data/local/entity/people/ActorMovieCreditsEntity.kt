@@ -12,11 +12,12 @@ data class ActorMovieCreditsEntity (
     val actorId: Int,
     val movieTitle: String,
     val character: String,
-    val voteAverage: Double
+    val voteAverage: Double,
+    val posterPath: String
     ){
         fun toActorMovieCredits() : ActorMovieCredits {
             return ActorMovieCredits(
-                movieId, actorId, movieTitle, character, voteAverage
+                movieId, actorId, movieTitle, character, voteAverage,posterPath
             )
         }
 }

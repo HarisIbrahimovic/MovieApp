@@ -37,4 +37,14 @@
     <string name="star_cast">Star Cast</string>
     <string name="overview">Overview</string>
     <string name="stars">Stars</string>
+    <string name="filmography">Filmography</string>
+    <string name="tv_shows">TV Shows</string>
+    <string name="born">Born:</string>
+    <string name="add_rating">Add rating</string>
+    <string name="rating">Rating</string>
+    <string name="ratings">Ratings</string>
+    <string name="addToFavorites">Add to favorites</string>
+    <string name="cancel">Cancel</string>
+    <string name="submit">Submit</string>
+    <string name="addToWatchlist">Add to watchlist</string>
 </resources>

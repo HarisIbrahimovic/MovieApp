@@ -5,9 +5,11 @@ import com.sirahi.movieapp.data.local.entity.movie.MovieDetailsEntity
 import com.sirahi.movieapp.data.remote.dto.credits.MediaCreditsDto
 import com.sirahi.movieapp.data.remote.dto.credits.MovieCastDto
 import com.sirahi.movieapp.data.remote.dto.credits.MovieCreditsDto
+import com.sirahi.movieapp.data.remote.dto.credits.TVCreditsDto
 import com.sirahi.movieapp.data.remote.dto.movie.MovieDetailsDto
 import com.sirahi.movieapp.data.remote.dto.movie.MovieDto
 import com.sirahi.movieapp.data.remote.dto.people.ActorDto
+import com.sirahi.movieapp.data.remote.dto.tv.TVDetailsDto
 import com.sirahi.movieapp.data.remote.dto.tv.TvDto
 import com.sirahi.movieapp.model.movie.MovieDetails
 import retrofit2.Response
@@ -42,6 +44,13 @@ interface ApiService {
         @Query("api_key") api_key: String
     ):Response<MovieCreditsDto>
 
+
+    @GET("3/tv/{tv_id}/credits")
+    suspend fun getTvCredits(
+            @Path("tv_id")tv_id:Int,
+            @Query("api_key") api_key: String
+    ):Response<MovieCreditsDto>
+
     @GET("/3/search/{key_word}")
     suspend fun getSearchDataMovie(
         @Path("key_word") key_word: String,
@@ -74,5 +83,10 @@ interface ApiService {
         @Query("api_key") api_key: String,
     ): Response<MovieDetailsDto>
 
+    @GET("/3/tv/{tv_id}")
+    suspend fun getSingleTvShow(
+            @Path("tv_id") id: String,
+            @Query("api_key") api_key: String,
+    ): Response<TVDetailsDto>
 }
 

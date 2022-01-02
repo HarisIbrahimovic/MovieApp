@@ -1,16 +1,16 @@
 package com.sirahi.movieapp.presentation
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.google.common.truth.Truth.assertThat
+import com.sirahi.movieapp.repository.fake.FakeSignUpRepository
+import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.presentation.util.Constants
 import com.sirahi.movieapp.presentation.util.RegError
-import com.sirahi.movieapp.presentation.util.RegistrationStatus
-
-import com.sirahi.movieapp.repository.fake.FakeSignUpRepository
+import com.google.common.truth.Truth.assertThat
+import java.lang.StringBuilder
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import java.lang.StringBuilder
+
 
 
 class SignUpViewModelTest{
@@ -104,8 +104,6 @@ class SignUpViewModelTest{
         assertThat(value.error?.mess).isEqualTo(compValue.mess)
     }
 
-
-
     @Test
     fun loginEmptyField(){
         viewModel.loginUser("","admin123")
@@ -151,7 +149,6 @@ class SignUpViewModelTest{
         assertThat(value.error?.field).isEqualTo(compValue.field)
         assertThat(value.error?.mess).isEqualTo(compValue.mess)
     }
-
 
     @Test
     fun registerLongInput(){

@@ -14,15 +14,21 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.movie.MovieCast
 
-class MovieCastAdapter(private val context: Context) : RecyclerView.Adapter<MovieCastAdapter.ViewHolder>() {
+class MovieCastAdapter(private val actorListener:ActorClickListener,private val context: Context) : RecyclerView.Adapter<MovieCastAdapter.ViewHolder>() {
 
     private var list: List<MovieCast>?=null
 
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view){
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener{
         val actorImage:ImageView = view.findViewById(R.id.actorImage)
         val actorName:TextView = view.findViewById(R.id.actorName)
         val characterName:TextView = view.findViewById(R.id.characterName)
+        init {
+            view.setOnClickListener(this)
+        }
+        override fun onClick(v: View?) {
+            list?.get(adapterPosition)?.let { actorListener.onActorClicked(it.actorId) }
+        }
 
     }
 
@@ -49,5 +55,9 @@ class MovieCastAdapter(private val context: Context) : RecyclerView.Adapter<Movi
     fun setList(newList: List<MovieCast>?) {
         list = newList
         notifyDataSetChanged()
+    }
+
+    interface ActorClickListener{
+        fun onActorClicked(id:Int)
     }
 }

@@ -14,7 +14,7 @@ data class MovieCreditDto(
     val original_title: String,
     val overview: String,
     val popularity: Double,
-    val poster_path: String,
+    var poster_path: String?,
     val release_date: String,
     val title: String,
     val video: Boolean,
@@ -28,8 +28,13 @@ data class MovieCreditDto(
              actorId = actorId ,
              movieTitle = title,
              character = character,
-             voteAverage = vote_average
+             voteAverage = vote_average,
+             posterPath = poster_path!!
         )
+    }
+
+    fun checkNull(){
+        if(poster_path==null)poster_path="No photo"
     }
 
 }

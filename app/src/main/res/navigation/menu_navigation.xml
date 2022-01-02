@@ -19,6 +19,14 @@
                 app:argType="integer"
                 android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/action_homeFragment_to_TVDetailsFragment"
+            app:destination="@id/TVDetailsFragment">
+            <argument
+                android:name="tvId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -33,6 +41,14 @@
                 app:argType="integer"
                 android:defaultValue="1" />
         </action>
+        <action
+            android:id="@+id/action_searchFragment_to_TVDetailsFragment"
+            app:destination="@id/TVDetailsFragment" >
+                <argument
+                    android:name="tvId"
+                    app:argType="integer"
+                    android:defaultValue="1" />
+        </action>
     </fragment>
     <fragment
 
@@ -45,5 +61,87 @@
             android:name="movieId"
             app:argType="integer"
             android:defaultValue="1" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_actorDetailsFragment"
+            app:destination="@id/actorDetailsFragment" >
+            <argument
+                android:name="actorId"
+                app:argType="integer"
+                android:defaultValue="1" />
+
+        </action>
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment" >
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                android:defaultValue="1" />
+            <argument
+                android:name="movieName"
+                app:argType="string"
+                />
+        </action>
     </fragment>
+
+    <fragment
+
+        android:id="@+id/actorDetailsFragment"
+        android:name="com.sirahi.movieapp.view.fragment.menu.details.ActorDetailsFragment"
+        android:label="ActorDetailsFragment">
+        <argument
+            android:name="actorId"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_actorDetailsFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" >
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
+        <action
+            android:id="@+id/action_actorDetailsFragment_to_TVDetailsFragment"
+            app:destination="@id/TVDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/TVDetailsFragment"
+        android:name="com.sirahi.movieapp.view.fragment.menu.details.TVDetailsFragment"
+        android:label="fragment_t_v_details"
+        tools:layout="@layout/fragment_t_v_details" >
+        <argument
+            android:name="tvId"
+            app:argType="integer"
+            android:defaultValue="1" />
+        <action
+            android:id="@+id/action_TVDetailsFragment_to_ratingFragment"
+            app:destination="@id/ratingFragment"/>
+        <action
+            android:id="@+id/action_TVDetailsFragment_to_actorDetailsFragment"
+            app:destination="@id/actorDetailsFragment" >
+            <argument
+                android:name="actorId"
+                app:argType="integer"
+                android:defaultValue="1" />
+        </action>
+    </fragment>
+
+
+    <fragment
+        android:id="@+id/ratingFragment"
+        android:name="com.sirahi.movieapp.view.fragment.menu.RatingFragment"
+        android:label="fragment_rating"
+        tools:layout="@layout/fragment_rating">
+        <argument
+                android:name="movieId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        <argument
+            android:name="movieName"
+            app:argType="string"
+            />
+
+    </fragment>
+
 </navigation>

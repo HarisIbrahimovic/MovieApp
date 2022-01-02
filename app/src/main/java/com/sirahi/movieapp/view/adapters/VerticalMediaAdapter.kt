@@ -15,15 +15,22 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.MediaResult
 
-class VerticalMediaAdapter(private val context: Context): RecyclerView.Adapter<VerticalMediaAdapter.ViewHolder>() {
+class VerticalMediaAdapter(private val context: Context,private val onVerticalMediaClicked: OnVerticalMediaClicked): RecyclerView.Adapter<VerticalMediaAdapter.ViewHolder>() {
 
     private var vList:List<MediaResult>?=null
 
-    class ViewHolder(view: View):RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view), View.OnClickListener{
         val image:ImageView = view.findViewById(R.id.mediaImageVertical)
         val name:TextView = view.findViewById(R.id.media_name_v)
         val overView:TextView = view.findViewById(R.id.overViewVertical)
         val scoreBar:RatingBar = view.findViewById(R.id.ratingBarVertical)
+        init {
+            view.setOnClickListener(this)
+        }
+        override fun onClick(v: View?) {
+            val item = vList!![adapterPosition]
+            onVerticalMediaClicked.onVerticalItemClicked(item.id,item.type)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -47,5 +54,9 @@ class VerticalMediaAdapter(private val context: Context): RecyclerView.Adapter<V
     fun setList(data: List<MediaResult>) {
         vList=data
         notifyDataSetChanged()
+    }
+
+    interface OnVerticalMediaClicked{
+        fun onVerticalItemClicked(id:Int,type:String)
     }
 }

@@ -15,14 +15,20 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.MediaResult
 
-class TvResultAdapter(private val context: Context): RecyclerView.Adapter<TvResultAdapter.ViewHolder>() {
+class TvResultAdapter(private val context: Context,private val onTvClickListener: TvClickListener): RecyclerView.Adapter<TvResultAdapter.ViewHolder>() {
 
     private var listOfMedia:List<MediaResult>?=null
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view),View.OnClickListener {
         val mediaName: TextView = view.findViewById(R.id.media_name)
         val mediaScore: RatingBar = view.findViewById(R.id.ratingBarVertical)
         val mediaImage: ImageView = view.findViewById(R.id.media_item_image)
+        init {
+            view.setOnClickListener(this)
+        }
+        override fun onClick(v: View?) {
+            onTvClickListener.onTvClicked(listOfMedia!![adapterPosition].id)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -46,5 +52,8 @@ class TvResultAdapter(private val context: Context): RecyclerView.Adapter<TvResu
     fun setList(list:List<MediaResult>){
         listOfMedia=list
         notifyDataSetChanged()
+    }
+    interface TvClickListener{
+        fun onTvClicked(id:Int)
     }
 }

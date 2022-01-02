@@ -121,22 +121,4 @@ class MenuViewModel
         getDiscoverData(list[position].id,list[position].name)
     }
 
-    fun setAdvancedGenre(position: Int) {
-        list[position].clicked=!list[position].clicked
-        _genreList.value=list
-    }
-
-    fun clearGenre() {
-        list[lastSelectedGenre].clicked=false
-        _genreList.value=list
-    }
-
-    fun removeGenreSelection() {
-        for(genre in list){
-            genre.clicked=false
-        }
-        list[lastSelectedGenre].clicked=true
-    }
-
-
 }

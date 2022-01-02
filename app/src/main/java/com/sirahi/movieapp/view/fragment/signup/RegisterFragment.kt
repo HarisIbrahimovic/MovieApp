@@ -12,7 +12,6 @@ import com.sirahi.movieapp.databinding.FragmentRegisterBinding
 import com.sirahi.movieapp.presentation.SignUpViewModel
 import com.sirahi.movieapp.presentation.util.Constants
 import com.sirahi.movieapp.presentation.util.RegistrationStatus
-import com.sirahi.movieapp.presentation.util.SignUpFragmentStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -46,7 +45,7 @@ class RegisterFragment : Fragment() {
             )
         }
         binding.signInTextRegister.setOnClickListener {
-          //  viewModel.setFragment(SignUpFragmentStatus.LOGIN)
+          //viewModel.setFragment(SignUpFragmentStatus.LOGIN)
         }
         binding.backButton.setOnClickListener {
             requireActivity().onBackPressed()

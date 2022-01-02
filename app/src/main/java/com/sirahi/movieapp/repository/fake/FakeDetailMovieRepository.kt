@@ -1,5 +1,6 @@
 package com.sirahi.movieapp.repository.fake
 
+import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.model.movie.MovieCast
 import com.sirahi.movieapp.model.movie.MovieDetails
 import com.sirahi.movieapp.presentation.util.Response
@@ -15,5 +16,9 @@ class FakeDetailMovieRepository:DetailMovieRepository {
         val list = ArrayList<MovieCast>()
         list.add(MovieCast("Tom Hardy","Eddie Brock/ Venom",1,"/9bXUMLOBCcnhcUGtfw0pdqbvpiH.jpg"))
         return Response.Success(list)
+    }
+
+    override fun addToFavorites(mediaItem: MediaItem) {
+        TODO("Not yet implemented")
     }
 }

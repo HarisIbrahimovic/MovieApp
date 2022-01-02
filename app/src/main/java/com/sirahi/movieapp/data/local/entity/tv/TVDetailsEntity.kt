@@ -18,7 +18,7 @@ data class TVDetailsEntity(
     val overview: String,
     val status: String,
     val type: String,
-    val voteAverage: Int,
+    val voteAverage: Double,
     val posterPath: String
 ) {
     fun toTVDetails():TVDetails{

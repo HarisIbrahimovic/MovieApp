@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="viewModel"
+            type="com.sirahi.movieapp.presentation.MovieDetailsViewModel" />
+
+        <variable
+            name = "adapter"
+            type="com.sirahi.movieapp.view.adapters.MovieCastAdapter"/>
+    </data>
+<FrameLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
     tools:context=".view.fragment.menu.details.MovieDetailsFragment">
 
@@ -34,7 +44,7 @@
             app:tint="@color/white" />
 
         <ImageView
-            android:id="@+id/imageView3"
+            android:id="@+id/menuMovieDetails"
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_marginEnd="10dp"
@@ -54,13 +64,14 @@
             android:layout_marginStart="10dp"
             android:layout_marginEnd="80dp"
             android:ellipsize="end"
+            showTitle="@{viewModel.movieDetails}"
             android:layout_marginBottom="3dp"
             android:fontFamily="@font/didact_gothic"
             android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="20sp"
             app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-            app:layout_constraintEnd_toStartOf="@+id/imageView3"
+            app:layout_constraintEnd_toStartOf="@+id/menuMovieDetails"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toEndOf="@+id/imageButton2"
             app:layout_constraintTop_toTopOf="@+id/imageButton2"
@@ -93,6 +104,7 @@
                 android:layout_marginTop="7dp"
                 android:layout_marginBottom="5dp"
                 android:layout_marginStart="15dp"
+                app:showTitle="@{viewModel.movieDetails}"
                 android:layout_marginEnd="15dp"
                 android:fontFamily="@font/didact_gothic"
                 android:textColor="#B5B5B5"
@@ -114,6 +126,7 @@
                 <ImageView
                     android:background="@color/black"
                     android:id="@+id/backdropPathImage"
+                    app:showBackdropImage="@{viewModel.movieDetails}"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
@@ -143,6 +156,7 @@
                 android:layout_height="160dp"
                 android:layout_marginStart="15dp"
                 android:layout_marginBottom="5dp"
+                app:showPosterImage="@{viewModel.movieDetails}"
                 android:elevation="10dp"
                 app:layout_constraintBottom_toBottomOf="@+id/cardView"
                 app:layout_constraintStart_toStartOf="parent" />
@@ -186,6 +200,7 @@
                 android:layout_height="wrap_content"
                 android:paddingStart="15dp"
                 android:paddingTop="3dp"
+                app:showOverview = "@{viewModel.movieDetails}"
                 android:paddingEnd="15dp"
                 android:paddingBottom="15dp"
                 android:background="@color/darkerGray"
@@ -219,15 +234,21 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/starsRecyclerView"
+                setCastAdapter="@{adapter}"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/darkerGray"
+                android:orientation="horizontal"
                 android:paddingStart="-5dp"
                 android:paddingTop="5dp"
                 android:paddingBottom="15dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/starsText" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintTop_toBottomOf="@+id/starsText"
+                tools:ignore="RtlSymmetry" />
+
+
+
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -236,3 +257,4 @@
 
 
 </FrameLayout>
+</layout>

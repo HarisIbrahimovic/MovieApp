@@ -11,7 +11,6 @@ import androidx.navigation.Navigation
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentStartLoginBinding
 import com.sirahi.movieapp.presentation.SignUpViewModel
-import com.sirahi.movieapp.presentation.util.SignUpFragmentStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 

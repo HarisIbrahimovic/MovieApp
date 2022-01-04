@@ -18,8 +18,8 @@ data class MovieResultDto(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-){
-    fun toMediaResultEntity(category : String,type:String):MediaResultEntity{
+) {
+    fun toMediaResultEntity(category: String, type: String): MediaResultEntity {
         return MediaResultEntity(
             mediaId = id,
             posterPath = poster_path!!,
@@ -27,29 +27,29 @@ data class MovieResultDto(
             type = type,
             title = title,
             score = vote_average,
-            overview=overview!!,
-            releaseDate=release_date!!,
+            overview = overview!!,
+            releaseDate = release_date!!,
             backdropPath = backdrop_path!!
         )
     }
 
-    fun toMediaResult(type:String):MediaResult {
+    fun toMediaResult(type: String): MediaResult {
         return MediaResult(
-            id=id,
-            posterPath= poster_path!!,
-            type=type,
-            score=vote_average,
-            overview=overview!!,
-            releaseDate=release_date!!,
+            id = id,
+            posterPath = poster_path!!,
+            type = type,
+            score = vote_average,
+            overview = overview!!,
+            releaseDate = release_date!!,
             title = title,
             backdropPath = backdrop_path!!
         )
     }
 
-    fun checkPosterPath(){
-        if (poster_path==null)poster_path="No photo"
-        if (release_date==null)release_date="No date"
-        if (overview==null)overview="No overview"
-        if (backdrop_path==null)backdrop_path="No photo"
+    fun checkPosterPath() {
+        if (poster_path == null) poster_path = "No photo"
+        if (release_date == null) release_date = "No date"
+        if (overview == null) overview = "No overview"
+        if (backdrop_path == null) backdrop_path = "No photo"
     }
 }

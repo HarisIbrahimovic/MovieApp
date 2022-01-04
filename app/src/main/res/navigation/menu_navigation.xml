@@ -141,7 +141,28 @@
             android:name="movieName"
             app:argType="string"
             />
-
+        <argument
+            android:name="type"
+            app:argType="string"
+            />
     </fragment>
+    <fragment
+        android:id="@+id/nowPlayingFragment"
+        android:name="com.sirahi.movieapp.view.fragment.menu.NowPlayingFragment"
+        android:label="NowPlayingFragment" >
+        <action
+            android:id="@+id/action_nowPlayingFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" >
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.sirahi.movieapp.view.fragment.menu.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 
 </navigation>

@@ -24,9 +24,9 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment(),MovieCastAdapter.ActorClickListener{
 
+    private var navController: NavController? = null
     private val viewModel: MovieDetailsViewModel by viewModels()
     private lateinit var binding: FragmentMovieDetailsBinding
-    private var navController: NavController? = null
     private lateinit var popupMenu:PopupMenu
 
     private lateinit var castAdapter:MovieCastAdapter
@@ -49,13 +49,18 @@ class MovieDetailsFragment : Fragment(),MovieCastAdapter.ActorClickListener{
         arguments?.getInt("movieId")?.let { viewModel.init(it) }
         castAdapter = MovieCastAdapter(this,requireContext())
         binding.adapter = castAdapter
-
         setPopupMenu()
+        observe()
+        onClicks()
+    }
 
+    private fun onClicks() {
         binding.menuMovieDetails.setOnClickListener {
             popupMenu.show()
         }
+    }
 
+    private fun observe() {
         viewModel.movieDetails.observe(viewLifecycleOwner, {
             if (it is IncomingMovieDetails.Success) {
                 movieImageSrc = it.data?.posterPath ?: "No Image"
@@ -79,7 +84,7 @@ class MovieDetailsFragment : Fragment(),MovieCastAdapter.ActorClickListener{
         popupMenu.setOnMenuItemClickListener {
             when(it.itemId){
                 R.id.addRating->{
-                    val bundle = bundleOf("movieId" to arguments?.getInt("movieId"), "movieName" to binding.movieFullNameDetails.text.toString())
+                    val bundle = bundleOf("movieId" to arguments?.getInt("movieId"), "movieName" to binding.movieFullNameDetails.text.toString(), "type" to "Movies")
                     navController?.navigate(R.id.action_movieDetailsFragment_to_ratingFragment, bundle)
                     true
                 }
@@ -87,18 +92,22 @@ class MovieDetailsFragment : Fragment(),MovieCastAdapter.ActorClickListener{
                     addToFavorites()
                     true
                 }
+                R.id.addToWatchlist->{
+                    addToWatchlist()
+                    true
+                }
                 else-> false
             }
         }
     }
 
+    private fun addToWatchlist() {
+        viewModel.addMovieToWatchlist(arguments?.getInt("movieId") ?: 0, binding.movieFullNameDetails.text.toString(), movieScore, movieImageSrc)
+        Toast.makeText(requireContext(),"Successfully added",Toast.LENGTH_SHORT).show()
+    }
+
     private fun addToFavorites() {
-        viewModel.addMovieToFavorites(
-                arguments?.getInt("movieId") ?: 0,
-                    binding.movieFullNameDetails.text.toString(),
-                    movieScore,
-                    movieImageSrc
-        )
+        viewModel.addMovieToFavorites(arguments?.getInt("movieId") ?: 0, binding.movieFullNameDetails.text.toString(), movieScore, movieImageSrc)
         Toast.makeText(requireContext(),"Successfully added",Toast.LENGTH_SHORT).show()
     }
 

@@ -1,5 +1,5 @@
 package com.sirahi.movieapp.presentation.util
 
 enum class MenuStatus {
-    HOME,SEARCH,NOW_PLAYING,PROFILE
+    HOME, SEARCH, NOW_PLAYING, PROFILE
 }

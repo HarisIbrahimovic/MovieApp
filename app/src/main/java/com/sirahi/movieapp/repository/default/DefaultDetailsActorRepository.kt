@@ -13,49 +13,54 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DefaultDetailsActorRepository
-    @Inject
-    constructor(private val apiService: ApiService,private val actorDao: ActorDao,private val actorMovieCreditsDao: ActorMovieCreditsDao):
+@Inject
+constructor(
+    private val apiService: ApiService,
+    private val actorDao: ActorDao,
+    private val actorMovieCreditsDao: ActorMovieCreditsDao
+) :
     DetailsActorRepository {
 
-    override suspend fun getActorDetails(id:Int): Response<Actor> {
+    override suspend fun getActorDetails(id: Int): Response<Actor> {
 
-        var actorDetails : Actor = actorDao.getActor(id)?.toActor()
+        var actorDetails: Actor = actorDao.getActor(id)?.toActor()
 
         return try {
-            val remoteResult = apiService.getActorDetails(id,ApiConstants.API_KEY)
+            val remoteResult = apiService.getActorDetails(id, ApiConstants.API_KEY)
             val result = remoteResult.body()
-            if(result!=null){
+            if (result != null) {
                 actorDao.insertActor(result.toActorEntity())
                 actorDetails = actorDao.getActor(id).toActor()
                 Response.Success(actorDetails)
-            }else Response.Error(actorDetails,"Unknown error occurred")
-        }catch (e: HttpException){
-            Response.Error(actorDetails,"Network error occurred")
-        }catch (e: IOException){
-            Response.Error(actorDetails,"Check your internet connection")
+            } else Response.Error(actorDetails, "Unknown error occurred")
+        } catch (e: HttpException) {
+            Response.Error(actorDetails, "Network error occurred")
+        } catch (e: IOException) {
+            Response.Error(actorDetails, "Check your internet connection")
         }
 
 
     }
 
-    override suspend fun getActorMovieCredits(id:Int): Response<List<ActorMovieCredits>> {
+    override suspend fun getActorMovieCredits(id: Int): Response<List<ActorMovieCredits>> {
         var actorCredits = actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
 
         return try {
-            val remoteResult = apiService.getActorCredits(id,ApiConstants.API_KEY)
-                remoteResult.body()?.cast?.map { it.checkNull() }
-                val result = remoteResult.body()?.cast?.map { it.toActorMovieCreditsEntity(id) }
-                if (result != null) {
-                    actorMovieCreditsDao.insertCredits(result)
-                    actorCredits = actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
-                    Response.Success(actorCredits)
-                }else
-                    Response.Error(actorCredits,"Unknown error occurred")
+            val remoteResult = apiService.getActorCredits(id, ApiConstants.API_KEY)
+            remoteResult.body()?.cast?.map { it.checkNull() }
+            val result = remoteResult.body()?.cast?.map { it.toActorMovieCreditsEntity(id) }
+            if (result != null) {
+                actorMovieCreditsDao.insertCredits(result)
+                actorCredits =
+                    actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
+                Response.Success(actorCredits)
+            } else
+                Response.Error(actorCredits, "Unknown error occurred")
 
-        }catch (e: HttpException){
-            Response.Error(actorCredits,"Network error occurred")
-        }catch (e: IOException){
-            Response.Error(actorCredits,"Check your internet connection")
+        } catch (e: HttpException) {
+            Response.Error(actorCredits, "Network error occurred")
+        } catch (e: IOException) {
+            Response.Error(actorCredits, "Check your internet connection")
         }
 
     }

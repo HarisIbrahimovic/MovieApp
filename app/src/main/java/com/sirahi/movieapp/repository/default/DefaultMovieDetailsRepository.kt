@@ -16,28 +16,28 @@ import java.io.IOException
 import javax.inject.Inject
 
 class DefaultMovieDetailsRepository
-    @Inject
-    constructor(
-        private val movieDetailsDao:MovieDetailsDao,
-        private val castDao:CastDao,
-        private val apiService: ApiService
-        ) : DetailMovieRepository {
+@Inject
+constructor(
+    private val movieDetailsDao: MovieDetailsDao,
+    private val castDao: CastDao,
+    private val apiService: ApiService
+) : DetailMovieRepository {
 
     override suspend fun getMovieDetails(id: Int): Response<MovieDetails> {
-        var detailsResult:MovieDetails = movieDetailsDao.getMovieData(id)?.toMovieDetails()
+        var detailsResult: MovieDetails = movieDetailsDao.getMovieData(id)?.toMovieDetails()
         return try {
-            val response = apiService.getSingleMovie(id.toString(),ApiConstants.API_KEY)
+            val response = apiService.getSingleMovie(id.toString(), ApiConstants.API_KEY)
             val result = response.body()?.toMovieDetailsEntity()
-            if(result!=null){
+            if (result != null) {
                 movieDetailsDao.deleteMovie(id)
                 movieDetailsDao.insertMovieDetails(result)
-                detailsResult=movieDetailsDao.getMovieData(id).toMovieDetails()
+                detailsResult = movieDetailsDao.getMovieData(id).toMovieDetails()
                 Response.Success(detailsResult)
-            } else Response.Error(detailsResult,"Unknown error occurred")
-        }catch (e:HttpException){
-            Response.Error(detailsResult,"Server error occurred")
-        }catch (e:IOException){
-            Response.Error(detailsResult,"Check your internet connection")
+            } else Response.Error(detailsResult, "Unknown error occurred")
+        } catch (e: HttpException) {
+            Response.Error(detailsResult, "Server error occurred")
+        } catch (e: IOException) {
+            Response.Error(detailsResult, "Check your internet connection")
         }
     }
 
@@ -46,7 +46,7 @@ class DefaultMovieDetailsRepository
         var cast = castDao.getCast(id).map { it.toMovieCast() }
 
         return try {
-            val response = apiService.getMovieCredits(id.toString(),ApiConstants.API_KEY)
+            val response = apiService.getMovieCredits(id.toString(), ApiConstants.API_KEY)
             val result = response.body()?.cast
             if (result != null) {
                 castDao.deleteCast(id)
@@ -54,19 +54,27 @@ class DefaultMovieDetailsRepository
                 castDao.insertCast(result.map { it.toMovieCastEntity(id) })
                 cast = castDao.getCast(id).map { it.toMovieCast() }
                 Response.Success(cast)
-            }else Response.Error(cast,"Unknown error occurred")
+            } else Response.Error(cast, "Unknown error occurred")
 
-            }catch (e:HttpException){
-                Response.Error(cast,"Server error occurred")
-            }catch (e:IOException){
-            Response.Error(cast,"Check your internet connection")
+        } catch (e: HttpException) {
+            Response.Error(cast, "Server error occurred")
+        } catch (e: IOException) {
+            Response.Error(cast, "Check your internet connection")
         }
     }
 
-    override fun addToFavorites(mediaItem:MediaItem) {
+    override fun addToFavorites(mediaItem: MediaItem) {
         val auth = FirebaseAuth.getInstance()
-        val dbRef = FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
+        val dbRef =
+            FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
         dbRef.child("FavoritesMovies").child(mediaItem.id.toString()).setValue(mediaItem)
+    }
+
+    override fun addToWatchlist(movie: MediaItem) {
+        val auth = FirebaseAuth.getInstance()
+        val dbRef =
+            FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
+        dbRef.child("WatchlistMovies").child(movie.id.toString()).setValue(movie)
     }
 
 

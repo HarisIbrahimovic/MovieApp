@@ -15,24 +15,29 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.MediaResult
 
-class TvResultAdapter(private val context: Context,private val onTvClickListener: TvClickListener): RecyclerView.Adapter<TvResultAdapter.ViewHolder>() {
+class TvResultAdapter(
+    private val context: Context,
+    private val onTvClickListener: TvClickListener
+) : RecyclerView.Adapter<TvResultAdapter.ViewHolder>() {
 
-    private var listOfMedia:List<MediaResult>?=null
+    private var listOfMedia: List<MediaResult>? = null
 
-    inner class ViewHolder(view: View): RecyclerView.ViewHolder(view),View.OnClickListener {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         val mediaName: TextView = view.findViewById(R.id.media_name)
         val mediaScore: RatingBar = view.findViewById(R.id.ratingBarVertical)
         val mediaImage: ImageView = view.findViewById(R.id.media_item_image)
+
         init {
             view.setOnClickListener(this)
         }
+
         override fun onClick(v: View?) {
             onTvClickListener.onTvClicked(listOfMedia!![adapterPosition].id)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.media_item,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.media_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -40,20 +45,22 @@ class TvResultAdapter(private val context: Context,private val onTvClickListener
         val requestOptions = RequestOptions.centerCropTransform()
         val media = listOfMedia!![position]
         holder.mediaName.text = media.title
-        holder.mediaScore.progress=media.score.toInt()
-        Glide.with(context).load(ApiConstants.URL_START+media.posterPath).apply(requestOptions).apply(RequestOptions.bitmapTransform( RoundedCorners(50))).into(holder.mediaImage)
+        holder.mediaScore.progress = media.score.toInt()
+        Glide.with(context).load(ApiConstants.URL_START + media.posterPath).apply(requestOptions)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))).into(holder.mediaImage)
     }
 
     override fun getItemCount(): Int {
-        return if(listOfMedia==null)0
+        return if (listOfMedia == null) 0
         else listOfMedia!!.size
     }
 
-    fun setList(list:List<MediaResult>){
-        listOfMedia=list
+    fun setList(list: List<MediaResult>) {
+        listOfMedia = list
         notifyDataSetChanged()
     }
-    interface TvClickListener{
-        fun onTvClicked(id:Int)
+
+    interface TvClickListener {
+        fun onTvClicked(id: Int)
     }
 }

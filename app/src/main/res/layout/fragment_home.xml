@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.sirahi.movieapp.presentation.MenuViewModel" />
+        <variable
+            name="genreAdapter"
+            type="com.sirahi.movieapp.view.adapters.GenreAdapter" />
+        <variable
+            name="discoverAdapter"
+            type="com.sirahi.movieapp.view.adapters.VerticalMediaAdapter" />
+        <variable
+            name="movieResultAdapter"
+            type="com.sirahi.movieapp.view.adapters.MovieResultAdapter" />
+        <variable
+            name="tvResultAdapter"
+            type="com.sirahi.movieapp.view.adapters.TvResultAdapter" />
+    </data>
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -81,6 +99,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="280dp"
                     android:orientation="horizontal"
+                    app:setMovieResultAdapter="@{movieResultAdapter}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -91,14 +111,14 @@
                 <ProgressBar
                     android:layout_width="64dp"
                     android:layout_height="64dp"
-                    android:visibility="gone"
                     android:id="@+id/firstProgressBar"
+                    android:visibility="gone"
+                    app:checkLoadingMediaData="@{viewModel.popularMoviesFlow}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     />
-
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -130,6 +150,8 @@
                     android:layout_height="280dp"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
+                    app:setTvResultAdapter="@{tvResultAdapter}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -142,11 +164,12 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="136dp"
+                    android:visibility="gone"
+                    app:checkLoadingMediaData="@{viewModel.popularTvData}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
                     app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="gone"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintVertical_bias="0.212" />
 
@@ -178,6 +201,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="50dp"
                     android:orientation="horizontal"
+                    setGenreAdapter="@{genreAdapter}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:elevation="5dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -189,29 +214,25 @@
                     android:layout_height="64dp"
                     android:elevation="15dp"
                     android:visibility="gone"
+                    app:checkLoadingMediaData="@{viewModel.discoverData}"
                     app:layout_constraintBottom_toBottomOf="@+id/discoverRecyclerView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/discoverRecyclerView" />
 
-
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/discoverRecyclerView"
                     android:layout_width="match_parent"
-                    android:layout_height="615dp"
-                    android:layout_marginBottom="15dp"
+                    android:layout_height="625dp"
+                    android:orientation="vertical"
+                    app:setDiscoverdapter="@{discoverAdapter}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/recyclerViewGenreSelect" />
-
-
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
     </ScrollView>
-
-
 </FrameLayout>
+</layout>

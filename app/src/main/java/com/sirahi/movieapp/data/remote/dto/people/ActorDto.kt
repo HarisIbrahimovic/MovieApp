@@ -17,8 +17,8 @@ data class ActorDto(
     val place_of_birth: String,
     val popularity: Double,
     val profile_path: String
-){
-    fun toActorEntity():ActorEntity{
+) {
+    fun toActorEntity(): ActorEntity {
         return ActorEntity(
             id = id,
             name = name,

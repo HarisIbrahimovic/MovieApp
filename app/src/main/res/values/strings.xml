@@ -47,4 +47,8 @@
     <string name="cancel">Cancel</string>
     <string name="submit">Submit</string>
     <string name="addToWatchlist">Add to watchlist</string>
+    <string name="watchlist_movies">Watchlist Movies</string>
+    <string name="watchlist_tv_shows">Watchlist Tv Shows</string>
+    <string name="favorite_movies">Favorite Movies</string>
+    <string name="favorite_tv_show">Favorite Tv Show</string>
 </resources>

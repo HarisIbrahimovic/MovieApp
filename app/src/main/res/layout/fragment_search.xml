@@ -1,4 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.sirahi.movieapp.presentation.MenuViewModel" />
+        <variable
+            name="adapter"
+            type="com.sirahi.movieapp.view.adapters.VerticalMediaAdapter" />
+    </data>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -31,7 +40,6 @@
                 android:layout_marginStart="15dp"
                 android:layout_marginEnd="15dp"
                 android:autofillHints=""
-
                 android:background="@drawable/search_bar_design"
                 android:drawableStart="@drawable/search_icon"
                 android:drawablePadding="10dp"
@@ -55,7 +63,10 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             android:paddingBottom="60dp"
+            app:setDiscoverdapter="@{adapter}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout3"
             app:layout_constraintVertical_bias="0.000" />
@@ -66,6 +77,7 @@
             android:id="@+id/searchProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
+            app:checkLoadingMediaData="@{viewModel.searchData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
@@ -75,3 +87,4 @@
 
 
 </FrameLayout>
+</layout>

@@ -9,19 +9,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.firebase.Rating
 
-class RatingAdapter(private val context:Context): RecyclerView.Adapter<RatingAdapter.ViewHolder>() {
+class RatingAdapter(private val context: Context) :
+    RecyclerView.Adapter<RatingAdapter.ViewHolder>() {
 
-    private var list:List<Rating>?=null
+    private var list: List<Rating>? = null
 
-    class ViewHolder(view:View):RecyclerView.ViewHolder(view) {
-        val userName:TextView = view.findViewById(R.id.usernameRating)
-        val userRating:TextView = view.findViewById(R.id.ratingScore)
-        val ratingDate:TextView = view.findViewById(R.id.dateRating)
-        val ratingComment:TextView = view.findViewById(R.id.commentRating)
+    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        val userName: TextView = view.findViewById(R.id.usernameRating)
+        val userRating: TextView = view.findViewById(R.id.ratingScore)
+        val ratingDate: TextView = view.findViewById(R.id.dateRating)
+        val ratingComment: TextView = view.findViewById(R.id.commentRating)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.rating_item,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.rating_item, parent, false)
         return ViewHolder(view)
     }
 
@@ -37,7 +38,7 @@ class RatingAdapter(private val context:Context): RecyclerView.Adapter<RatingAda
         return list?.size ?: 0
     }
 
-    fun setList(newList:List<Rating>){
+    fun setList(newList: List<Rating>) {
         list = newList
         notifyDataSetChanged()
     }

@@ -15,17 +15,22 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.people.ActorMovieCredits
 
-class ActorMovieCreditsAdapter(private val context: Context,private val onMovieClickListener: MovieResultAdapter.ClickListener): RecyclerView.Adapter<ActorMovieCreditsAdapter.ViewHolder>() {
+class ActorMovieCreditsAdapter(
+    private val context: Context,
+    private val onMovieClickListener: MovieResultAdapter.ClickListener
+) : RecyclerView.Adapter<ActorMovieCreditsAdapter.ViewHolder>() {
 
-    private var listOfMedia : List<ActorMovieCredits>?=null
+    private var listOfMedia: List<ActorMovieCredits>? = null
 
-    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view),View.OnClickListener{
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         val characterName: TextView = view.findViewById(R.id.actorName)
         val mediaScore: RatingBar = view.findViewById(R.id.ratingBarVertical)
         val mediaImage: ImageView = view.findViewById(R.id.media_item_image)
+
         init {
             view.setOnClickListener(this)
         }
+
         override fun onClick(v: View?) {
             onMovieClickListener.onMovieClikced(listOfMedia!![adapterPosition].movieId)
         }
@@ -33,7 +38,8 @@ class ActorMovieCreditsAdapter(private val context: Context,private val onMovieC
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.actor_credit_details_movie,parent,false)
+        val view =
+            LayoutInflater.from(context).inflate(R.layout.actor_credit_details_movie, parent, false)
         return ViewHolder(view)
     }
 
@@ -41,18 +47,21 @@ class ActorMovieCreditsAdapter(private val context: Context,private val onMovieC
         val requestOptions = RequestOptions.centerCropTransform()
         val media = listOfMedia!![position]
         holder.characterName.text = media.character
-        holder.mediaScore.progress= media.voteAverage.toInt()
-        Glide.with(context).load(ApiConstants.URL_START+media.posterPath).apply(requestOptions).apply(
-                   RequestOptions.bitmapTransform( RoundedCorners(50))).into(holder.mediaImage)
+        holder.mediaScore.progress = media.voteAverage.toInt()
+        Glide.with(context)
+            .load(ApiConstants.URL_START + media.posterPath)
+            .apply(requestOptions)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(50))
+            ).into(holder.mediaImage)
 
     }
 
     override fun getItemCount(): Int {
-        return if(listOfMedia==null)0
+        return if (listOfMedia == null) 0
         else listOfMedia!!.size
     }
 
-    fun setList(nList:  List<ActorMovieCredits>){
+    fun setList(nList: List<ActorMovieCredits>) {
         listOfMedia = nList
         notifyDataSetChanged()
     }

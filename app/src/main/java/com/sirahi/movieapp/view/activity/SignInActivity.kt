@@ -28,14 +28,14 @@ class SignInActivity : AppCompatActivity() {
 
     private fun observe() {
 
-        viewModel.getSignInData().observe(this,{
-            when(it){
-                is RegistrationStatus.Success->{
+        viewModel.getSignInData().observe(this, {
+            when (it) {
+                is RegistrationStatus.Success -> {
                     viewModel.setStatusToPending()
-                    startActivity(Intent(applicationContext,MenuActivity::class.java))
+                    startActivity(Intent(applicationContext, MenuActivity::class.java))
                     finish()
                 }
-                else->Unit
+                else -> Unit
             }
         })
     }

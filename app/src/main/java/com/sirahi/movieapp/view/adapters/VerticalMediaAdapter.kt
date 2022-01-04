@@ -15,36 +15,42 @@ import com.sirahi.movieapp.R
 import com.sirahi.movieapp.data.remote.util.ApiConstants
 import com.sirahi.movieapp.model.MediaResult
 
-class VerticalMediaAdapter(private val context: Context,private val onVerticalMediaClicked: OnVerticalMediaClicked): RecyclerView.Adapter<VerticalMediaAdapter.ViewHolder>() {
+class VerticalMediaAdapter(
+    private val context: Context,
+    private val onVerticalMediaClicked: OnVerticalMediaClicked
+) : RecyclerView.Adapter<VerticalMediaAdapter.ViewHolder>() {
 
-    private var vList:List<MediaResult>?=null
+    private var vList: List<MediaResult>? = null
 
-    inner class ViewHolder(view: View):RecyclerView.ViewHolder(view), View.OnClickListener{
-        val image:ImageView = view.findViewById(R.id.mediaImageVertical)
-        val name:TextView = view.findViewById(R.id.media_name_v)
-        val overView:TextView = view.findViewById(R.id.overViewVertical)
-        val scoreBar:RatingBar = view.findViewById(R.id.ratingBarVertical)
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view), View.OnClickListener {
+        val image: ImageView = view.findViewById(R.id.mediaImageVertical)
+        val name: TextView = view.findViewById(R.id.media_name_v)
+        val overView: TextView = view.findViewById(R.id.overViewVertical)
+        val scoreBar: RatingBar = view.findViewById(R.id.ratingBarVertical)
+
         init {
             view.setOnClickListener(this)
         }
+
         override fun onClick(v: View?) {
             val item = vList!![adapterPosition]
-            onVerticalMediaClicked.onVerticalItemClicked(item.id,item.type)
+            onVerticalMediaClicked.onVerticalItemClicked(item.id, item.type)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.search_item_design,parent,false)
+        val view = LayoutInflater.from(context).inflate(R.layout.search_item_design, parent, false)
         return ViewHolder(view)
     }
 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val result = vList!![position]
-        holder.name.text=result.title
-        holder.overView.text=result.overview
-        holder.scoreBar.progress=result.score.toInt()
-        Glide.with(context).load(ApiConstants.URL_START+result.posterPath).apply(RequestOptions.bitmapTransform(RoundedCorners(40))).into(holder.image)
+        holder.name.text = result.title
+        holder.overView.text = result.overview
+        holder.scoreBar.progress = result.score.toInt()
+        Glide.with(context).load(ApiConstants.URL_START + result.posterPath)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(40))).into(holder.image)
     }
 
     override fun getItemCount(): Int {
@@ -52,11 +58,11 @@ class VerticalMediaAdapter(private val context: Context,private val onVerticalMe
     }
 
     fun setList(data: List<MediaResult>) {
-        vList=data
+        vList = data
         notifyDataSetChanged()
     }
 
-    interface OnVerticalMediaClicked{
-        fun onVerticalItemClicked(id:Int,type:String)
+    interface OnVerticalMediaClicked {
+        fun onVerticalItemClicked(id: Int, type: String)
     }
 }

@@ -11,12 +11,12 @@
         android:icon="@drawable/search_icon_sel"
         />
     <item
-        android:id="@+id/now_playing_item"
+        android:id="@+id/nowPlayingFragment"
         android:title="@string/now_playing"
         android:icon="@drawable/now_playing_item_sel"
         />
     <item
-        android:id="@+id/profile_item"
+        android:id="@+id/profileFragment"
         android:title="@string/profile"
         android:icon="@drawable/user_icon_sel"
         />

@@ -25,10 +25,10 @@ data class MovieDetailsDto(
     val video: Boolean,
     val vote_average: Double,
     val vote_count: Int
-){
+) {
     fun toMovieDetailsEntity(): MovieDetailsEntity {
         return MovieDetailsEntity(
-            id=id,
+            id = id,
             voteAverage = vote_average,
             backdropPath = backdrop_path,
             title = title,

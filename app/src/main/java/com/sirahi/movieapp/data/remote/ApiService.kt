@@ -23,59 +23,59 @@ interface ApiService {
     suspend fun getMovies(
         @Path("key_word") key_word: String,
         @Query("api_key") api_key: String
-    ):Response<MovieDto>
+    ): Response<MovieDto>
 
     @GET("/3/tv/{key_word}")
     suspend fun getTV(
-            @Path("key_word") key_word: String,
-            @Query("api_key") api_key: String
-    ):Response<TvDto>
+        @Path("key_word") key_word: String,
+        @Query("api_key") api_key: String
+    ): Response<TvDto>
 
     @GET("/3/discover/movie")
     suspend fun discoverMovies(
-            @Query("with_genres") with_genres: Int,
-            @Query("api_key") api_key: String
-    ):Response<MovieDto>
+        @Query("with_genres") with_genres: Int,
+        @Query("api_key") api_key: String
+    ): Response<MovieDto>
 
 
     @GET("/3/movie/{movieId}/credits")
     suspend fun getMovieCredits(
         @Path("movieId") movieId: String,
         @Query("api_key") api_key: String
-    ):Response<MovieCreditsDto>
+    ): Response<MovieCreditsDto>
 
 
     @GET("3/tv/{tv_id}/credits")
     suspend fun getTvCredits(
-            @Path("tv_id")tv_id:Int,
-            @Query("api_key") api_key: String
-    ):Response<MovieCreditsDto>
+        @Path("tv_id") tv_id: Int,
+        @Query("api_key") api_key: String
+    ): Response<MovieCreditsDto>
 
     @GET("/3/search/{key_word}")
     suspend fun getSearchDataMovie(
         @Path("key_word") key_word: String,
         @Query("api_key") api_key: String,
         @Query("query") query: String
-    ):Response<MovieDto>
+    ): Response<MovieDto>
 
     @GET("/3/search/{key_word}")
     suspend fun getSearchDataTv(
         @Path("key_word") key_word: String,
         @Query("api_key") api_key: String,
         @Query("query") query: String
-    ):Response<TvDto>
+    ): Response<TvDto>
 
     @GET("/3/person/{person_id}")
     suspend fun getActorDetails(
         @Path("person_id") person_id: Int,
         @Query("api_key") api_key: String
-    ):Response<ActorDto>
+    ): Response<ActorDto>
 
     @GET("/3/person/{actorId}/movie_credits")
     suspend fun getActorCredits(
         @Path("actorId") actorId: Int,
         @Query("api_key") api_key: String
-    ):Response<MediaCreditsDto>
+    ): Response<MediaCreditsDto>
 
     @GET("/3/movie/{movieId}")
     suspend fun getSingleMovie(
@@ -85,8 +85,8 @@ interface ApiService {
 
     @GET("/3/tv/{tv_id}")
     suspend fun getSingleTvShow(
-            @Path("tv_id") id: String,
-            @Query("api_key") api_key: String,
+        @Path("tv_id") id: String,
+        @Query("api_key") api_key: String,
     ): Response<TVDetailsDto>
 }
 

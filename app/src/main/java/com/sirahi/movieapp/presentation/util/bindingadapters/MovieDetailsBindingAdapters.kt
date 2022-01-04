@@ -14,9 +14,9 @@ import com.sirahi.movieapp.view.adapters.ActorMovieCreditsAdapter
 import com.sirahi.movieapp.view.adapters.MovieCastAdapter
 
 
-fun checkMovieDataSuccess(incomingMovieDetails: IncomingMovieDetails?):Boolean{
-    return when(incomingMovieDetails){
-        is IncomingMovieDetails.Success->true
+fun checkMovieDataSuccess(incomingMovieDetails: IncomingMovieDetails?): Boolean {
+    return when (incomingMovieDetails) {
+        is IncomingMovieDetails.Success -> true
         is IncomingMovieDetails.Failure -> incomingMovieDetails.data != null
         else -> false
     }
@@ -24,40 +24,39 @@ fun checkMovieDataSuccess(incomingMovieDetails: IncomingMovieDetails?):Boolean{
 
 
 @BindingAdapter("showTitle")
-fun showTitle(view: TextView, incomingMovieDetails: IncomingMovieDetails?){
-    if(checkMovieDataSuccess(incomingMovieDetails)) view.text = incomingMovieDetails?.data?.title
-
+fun showTitle(view: TextView, incomingMovieDetails: IncomingMovieDetails?) {
+    if (checkMovieDataSuccess(incomingMovieDetails)) view.text = incomingMovieDetails?.data?.title
 }
 
 @BindingAdapter("showOverview")
-fun showOverview(view: TextView, incomingMovieDetails: IncomingMovieDetails?){
-    if(checkMovieDataSuccess(incomingMovieDetails))
+fun showOverview(view: TextView, incomingMovieDetails: IncomingMovieDetails?) {
+    if (checkMovieDataSuccess(incomingMovieDetails))
         view.text = incomingMovieDetails?.data?.overview
-    if(incomingMovieDetails is IncomingMovieDetails.Failure)
-        Toast.makeText(view.context,incomingMovieDetails.error,Toast.LENGTH_SHORT).show()
+    if (incomingMovieDetails is IncomingMovieDetails.Failure)
+        Toast.makeText(view.context, incomingMovieDetails.error, Toast.LENGTH_SHORT).show()
 }
 
 @BindingAdapter("showBackdropImage")
-fun showBackdropImage(view: ImageView, incomingMovieDetails: IncomingMovieDetails?){
-    if(checkMovieDataSuccess(incomingMovieDetails)){
+fun showBackdropImage(view: ImageView, incomingMovieDetails: IncomingMovieDetails?) {
+    if (checkMovieDataSuccess(incomingMovieDetails)) {
         Glide.with(view.context)
-                .load(ApiConstants.URL_START+incomingMovieDetails?.data?.backdropPath)
-                .apply(RequestOptions.centerCropTransform())
-                .into(view)
+            .load(ApiConstants.URL_START + incomingMovieDetails?.data?.backdropPath)
+            .apply(RequestOptions.centerCropTransform())
+            .into(view)
     }
 }
 
 @BindingAdapter("showPosterImage")
-fun showPosterImage(view: ImageView, incomingMovieDetails: IncomingMovieDetails?){
-    if(checkMovieDataSuccess(incomingMovieDetails)){
+fun showPosterImage(view: ImageView, incomingMovieDetails: IncomingMovieDetails?) {
+    if (checkMovieDataSuccess(incomingMovieDetails)) {
         Glide.with(view.context)
-                .load(ApiConstants.URL_START+incomingMovieDetails?.data?.posterPath)
-                .apply(RequestOptions.centerCropTransform())
-                .into(view)
+            .load(ApiConstants.URL_START + incomingMovieDetails?.data?.posterPath)
+            .apply(RequestOptions.centerCropTransform())
+            .into(view)
     }
 }
 
 @BindingAdapter("setCastAdapter")
-fun setCastAdapter(view: RecyclerView, adapter: MovieCastAdapter){
+fun setCastAdapter(view: RecyclerView, adapter: MovieCastAdapter) {
     view.adapter = adapter
 }

@@ -15,8 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ActorDetailsViewModel
-    @Inject constructor(private val repository: DetailsActorRepository)
-    : ViewModel() {
+@Inject constructor(private val repository: DetailsActorRepository) : ViewModel() {
 
     private val _actorDetails = MutableLiveData<IncomingActorDetails>()
     val actorDetails: LiveData<IncomingActorDetails> = _actorDetails
@@ -25,24 +24,44 @@ class ActorDetailsViewModel
     val actorCredits: LiveData<IncomingActorMovieCredits> = _actorCredits
 
 
-    fun setActorData(id:Int){
+    fun setActorData(id: Int) {
         setActorDetails(id)
         setActorCredits(id)
     }
 
-    private fun setActorCredits(id: Int) = viewModelScope.launch(Dispatchers.IO){
+    private fun setActorCredits(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         _actorCredits.postValue(IncomingActorMovieCredits.Loading)
-        when (val response = repository.getActorMovieCredits(id)){
-            is Response.Success ->_actorCredits.postValue(IncomingActorMovieCredits.Success(response.data!!))
-            is Response.Error ->_actorCredits.postValue(IncomingActorMovieCredits.Failure(response.data,response.errorMessage!!))
+        when (val response = repository.getActorMovieCredits(id)) {
+            is Response.Success -> _actorCredits.postValue(
+                response.data?.let {
+                    IncomingActorMovieCredits.Success(
+                        it
+                    )
+                }
+            )
+            is Response.Error -> _actorCredits.postValue(
+                response.errorMessage?.let {
+                    IncomingActorMovieCredits.Failure(
+                        response.data,
+                        it
+                    )
+                }
+            )
         }
     }
 
-    private fun setActorDetails(id:Int) = viewModelScope.launch(Dispatchers.IO) {
+    private fun setActorDetails(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         _actorDetails.postValue(IncomingActorDetails.Loading)
-        when (val response = repository.getActorDetails(id)){
-            is Response.Success ->_actorDetails.postValue(IncomingActorDetails.Success(response.data!!))
-            is Response.Error ->_actorDetails.postValue(IncomingActorDetails.Failure(response.data,response.errorMessage!!))
+        when (val response = repository.getActorDetails(id)) {
+            is Response.Success -> _actorDetails.postValue(IncomingActorDetails.Success(response.data!!))
+            is Response.Error -> _actorDetails.postValue(
+                response.errorMessage?.let {
+                    IncomingActorDetails.Failure(
+                        response.data,
+                        it
+                    )
+                }
+            )
         }
 
     }

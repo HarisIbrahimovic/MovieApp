@@ -6,131 +6,81 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentHomeBinding
 import com.sirahi.movieapp.presentation.MenuViewModel
-import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
 import com.sirahi.movieapp.view.adapters.GenreAdapter
 import com.sirahi.movieapp.view.adapters.MovieResultAdapter
 import com.sirahi.movieapp.view.adapters.TvResultAdapter
 import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.ClickListener,TvResultAdapter.TvClickListener,VerticalMediaAdapter.OnVerticalMediaClicked{
+class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.ClickListener,
+    TvResultAdapter.TvClickListener, VerticalMediaAdapter.OnVerticalMediaClicked {
 
-    private val viewModel : MenuViewModel  by activityViewModels()
-    private var _binding  : FragmentHomeBinding?=null
-    private val binding get() = _binding!!
-
-    private lateinit var mAdapter:MovieResultAdapter
-    private lateinit var discoverAdapter:VerticalMediaAdapter
-    private lateinit var tvAdapter:TvResultAdapter
-    private lateinit var genreAdapter:GenreAdapter
-
-
+    private val viewModel: MenuViewModel by activityViewModels()
+    private lateinit var binding: FragmentHomeBinding
     private var navController: NavController? = null
 
+    private lateinit var discoverAdapter: VerticalMediaAdapter
+    private lateinit var mAdapter: MovieResultAdapter
+    private lateinit var genreAdapter: GenreAdapter
+    private lateinit var tvAdapter: TvResultAdapter
+
     override fun onCreateView(
-            inflater: LayoutInflater, container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding.inflate(layoutInflater,container,false)
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home, container, false)
+        binding.lifecycleOwner = this
+        binding.viewModel = viewModel
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController =  Navigation.findNavController(view)
-        mAdapter = MovieResultAdapter(requireContext(),this)
-        tvAdapter = TvResultAdapter(requireContext(),this)
-        genreAdapter = GenreAdapter(requireContext(),this)
-        discoverAdapter = VerticalMediaAdapter(requireContext(),this)
-        setUpRecyclerViews()
+        navController = Navigation.findNavController(view)
+        setAdapters()
         observe()
+
+        lifecycleScope.launchWhenStarted {
+            viewModel.popularMoviesFlow.collect {
+                it.data?.let { list -> mAdapter.setList(list) }
+            }
+        }
     }
 
-    private fun setUpRecyclerViews() {
-        binding.popularMoviesRec.apply {
-            adapter=mAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        }
-        binding.popularTvShowsRecyclerView.apply {
-            adapter = tvAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        }
-        binding.recyclerViewGenreSelect.apply {
-            adapter= genreAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.HORIZONTAL,false)
-        }
-        binding.discoverRecyclerView.apply {
-            adapter= discoverAdapter
-            layoutManager = LinearLayoutManager(requireContext(),LinearLayoutManager.VERTICAL,false)
-        }
-
+    private fun setAdapters() {
+        discoverAdapter = VerticalMediaAdapter(requireContext(), this)
+        tvAdapter = TvResultAdapter(requireContext(), this)
+        mAdapter = MovieResultAdapter(requireContext(), this)
+        genreAdapter = GenreAdapter(requireContext(), this)
+        binding.discoverAdapter = discoverAdapter
+        binding.movieResultAdapter = mAdapter
+        binding.tvResultAdapter = tvAdapter
+        binding.genreAdapter = genreAdapter
     }
 
     private fun observe() {
-
-        viewModel.popularMoviesData.observe(viewLifecycleOwner, {
-            when (it) {
-                is IncomingMediaData.Loading ->
-                    binding.firstProgressBar.visibility = View.VISIBLE
-                is IncomingMediaData.Success -> {
-                    binding.firstProgressBar.visibility = View.GONE
-                    mAdapter.setList(it.data)
-                }
-                is IncomingMediaData.Failure -> {
-                    binding.firstProgressBar.visibility = View.GONE
-                    if (it.data != null) mAdapter.setList(it.data)
-                }
-            }
-        })
-
-        viewModel.popularTvData.observe(viewLifecycleOwner, {
-            when (it) {
-                is IncomingMediaData.Loading ->
-                    binding.secondProgressBar.visibility = View.VISIBLE
-                is IncomingMediaData.Success -> {
-                    binding.secondProgressBar.visibility = View.GONE
-                    tvAdapter.setList(it.data)
-                }
-                is IncomingMediaData.Failure -> {
-                    binding.secondProgressBar.visibility = View.GONE
-                    if (it.data != null) tvAdapter.setList(it.data)
-                }
-            }
-        })
-
-        viewModel.discoverData.observe(viewLifecycleOwner, {
-            when (it) {
-                is IncomingMediaData.Loading ->
-                    binding.thirdProgressBar.visibility = View.VISIBLE
-                is IncomingMediaData.Success -> {
-                    binding.thirdProgressBar.visibility = View.GONE
-                    discoverAdapter.setList(it.data)
-                }
-                is IncomingMediaData.Failure -> {
-                    binding.thirdProgressBar.visibility = View.GONE
-                    Toast.makeText(requireContext(), it.error, Toast.LENGTH_LONG).show()
-                    if (it.data != null) discoverAdapter.setList(it.data)
-                }
-            }
-        })
-
-        viewModel.genreList.observe(viewLifecycleOwner,{
-            genreAdapter.setList(it)
-        })
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding=null
+        //viewModel.popularMoviesData.observe(viewLifecycleOwner, { if(it?.data != null)mAdapter.setList(it.data) })
+        viewModel.popularTvData.observe(
+            viewLifecycleOwner,
+            { if (it?.data != null) tvAdapter.setList(it.data) })
+        viewModel.discoverData.observe(
+            viewLifecycleOwner,
+            { if (it?.data != null) discoverAdapter.setList(it.data) })
+        viewModel.genreList.observe(viewLifecycleOwner, { genreAdapter.setList(it) })
     }
 
     override fun onMovieClikced(id: Int) {
@@ -148,12 +98,7 @@ class HomeFragment : Fragment(),MovieResultAdapter.ClickListener,GenreAdapter.Cl
     }
 
     override fun onVerticalItemClicked(id: Int, type: String) {
-        if(type!="TV"){
-            val bundle = bundleOf("movieId" to id)
-            navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
-        }else{
-            val bundle = bundleOf("tvId" to id)
-            navController?.navigate(R.id.action_homeFragment_to_TVDetailsFragment, bundle)
-        }
+        val bundle = bundleOf("movieId" to id)
+        navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
     }
 }

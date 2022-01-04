@@ -37,23 +37,28 @@ object SingletonModule {
         .create(ApiService::class.java)
 
     @Provides
-    fun providesActorDao(localDatabase: LocalDatabase):ActorDao = localDatabase.actorDao()
+    fun providesActorDao(localDatabase: LocalDatabase): ActorDao = localDatabase.actorDao()
 
     @Provides
-    fun providesActorMovieCreditsDao(localDatabase: LocalDatabase):ActorMovieCreditsDao = localDatabase.actorMovieCreditsDao()
+    fun providesActorMovieCreditsDao(localDatabase: LocalDatabase): ActorMovieCreditsDao =
+        localDatabase.actorMovieCreditsDao()
 
     @Provides
-    fun providesActorTvCreditsDao(localDatabase: LocalDatabase):ActorTvCreditsDao = localDatabase.actorTvCreditsDao()
+    fun providesActorTvCreditsDao(localDatabase: LocalDatabase): ActorTvCreditsDao =
+        localDatabase.actorTvCreditsDao()
 
     @Provides
-    fun providesCastDao(localDatabase: LocalDatabase):CastDao = localDatabase.castDao()
+    fun providesCastDao(localDatabase: LocalDatabase): CastDao = localDatabase.castDao()
 
     @Provides
-    fun providesMediaResultDao(localDatabase: LocalDatabase):MediaResultDao = localDatabase.mediaResultDao()
+    fun providesMediaResultDao(localDatabase: LocalDatabase): MediaResultDao =
+        localDatabase.mediaResultDao()
 
     @Provides
-    fun providesMovieDetailsDao(localDatabase: LocalDatabase):MovieDetailsDao = localDatabase.movieDetailsDao()
+    fun providesMovieDetailsDao(localDatabase: LocalDatabase): MovieDetailsDao =
+        localDatabase.movieDetailsDao()
 
     @Provides
-    fun providesTvDetailsDao(localDatabase: LocalDatabase):TvDetailsDao = localDatabase.tvDetailsDao()
+    fun providesTvDetailsDao(localDatabase: LocalDatabase): TvDetailsDao =
+        localDatabase.tvDetailsDao()
 }

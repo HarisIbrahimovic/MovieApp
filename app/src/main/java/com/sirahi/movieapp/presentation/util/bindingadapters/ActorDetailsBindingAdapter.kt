@@ -13,42 +13,44 @@ import com.sirahi.movieapp.view.adapters.ActorMovieCreditsAdapter
 
 
 @BindingAdapter("showActorName")
-fun showActorName(view:TextView,incomingActorDetails: IncomingActorDetails?){
-    if(checkActorDataSuccess(incomingActorDetails))
+fun showActorName(view: TextView, incomingActorDetails: IncomingActorDetails?) {
+    if (checkActorDataSuccess(incomingActorDetails))
         view.text = incomingActorDetails?.data?.name
-    if(incomingActorDetails is IncomingActorDetails.Failure)
-        Toast.makeText(view.context,incomingActorDetails.error,Toast.LENGTH_SHORT).show()
+    if (incomingActorDetails is IncomingActorDetails.Failure)
+        Toast.makeText(view.context, incomingActorDetails.error, Toast.LENGTH_SHORT).show()
 }
 
 @BindingAdapter("showActorBiography")
-fun showActorBiography(view:TextView,incomingActorDetails: IncomingActorDetails?){
-    if(checkActorDataSuccess(incomingActorDetails))view.text = incomingActorDetails?.data?.biography
+fun showActorBiography(view: TextView, incomingActorDetails: IncomingActorDetails?) {
+    if (checkActorDataSuccess(incomingActorDetails)) view.text =
+        incomingActorDetails?.data?.biography
 }
 
 @BindingAdapter("showActorBirthDay")
-fun showActorBirthDay(view:TextView,incomingActorDetails: IncomingActorDetails?){
-    if(checkActorDataSuccess(incomingActorDetails))view.text=incomingActorDetails?.data?.birthday
+fun showActorBirthDay(view: TextView, incomingActorDetails: IncomingActorDetails?) {
+    if (checkActorDataSuccess(incomingActorDetails)) view.text =
+        incomingActorDetails?.data?.birthday
 }
 
 @BindingAdapter("setActorMovieCreditsAdapter")
-fun setActorMovieCreditsAdapter(view:RecyclerView, adapter:ActorMovieCreditsAdapter){
+fun setActorMovieCreditsAdapter(view: RecyclerView, adapter: ActorMovieCreditsAdapter) {
     view.adapter = adapter
 }
 
 @BindingAdapter("showActorImage")
-fun showActorImage(view: ImageView, incomingActorDetails: IncomingActorDetails?){
-    if(checkActorDataSuccess(incomingActorDetails)){
+fun showActorImage(view: ImageView, incomingActorDetails: IncomingActorDetails?) {
+    if (checkActorDataSuccess(incomingActorDetails)) {
         Glide.with(view.context)
-                .load(ApiConstants.URL_START+incomingActorDetails?.data?.profilePath)
-                .apply(RequestOptions.centerCropTransform())
-                .into(view)
+            .load(ApiConstants.URL_START + incomingActorDetails?.data?.profilePath)
+            .apply(RequestOptions.centerCropTransform())
+            .into(view)
     }
 }
 
-fun checkActorDataSuccess(incomingActorDetails: IncomingActorDetails?):Boolean{
-    return when(incomingActorDetails){
-        is IncomingActorDetails.Success->true
-        is IncomingActorDetails.Failure -> incomingActorDetails.data!=null
+fun checkActorDataSuccess(incomingActorDetails: IncomingActorDetails?): Boolean {
+    return when (incomingActorDetails) {
+        is IncomingActorDetails.Success -> true
+        is IncomingActorDetails.Failure -> incomingActorDetails.data != null
         else -> false
     }
 }

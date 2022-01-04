@@ -17,19 +17,16 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MenuActivity : AppCompatActivity() {
 
-    private val viewModel:MenuViewModel  by viewModels()
-    private lateinit var binding:ActivityMenuBinding
+    private val viewModel: MenuViewModel by viewModels()
+    private lateinit var binding: ActivityMenuBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
         window.navigationBarColor = ContextCompat.getColor(applicationContext, R.color.black)
-        val navController = Navigation.findNavController(this,R.id.menuFrame)
-        NavigationUI.setupWithNavController(binding.bottomNavigationView,navController)
+        val navController = Navigation.findNavController(this, R.id.menuFrame)
+        NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)
     }
-
-
-
 
 }

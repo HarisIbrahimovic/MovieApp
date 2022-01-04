@@ -16,49 +16,62 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieDetailsViewModel
-    @Inject constructor (private val repository:DetailMovieRepository)
-    :ViewModel(){
+@Inject constructor(private val repository: DetailMovieRepository) : ViewModel() {
 
     private val _movieDetails = MutableLiveData<IncomingMovieDetails>()
     private val _movieCast = MutableLiveData<IncomingMovieCast>()
 
-    val movieDetails:LiveData<IncomingMovieDetails> = _movieDetails
+    val movieDetails: LiveData<IncomingMovieDetails> = _movieDetails
     val movieCast: LiveData<IncomingMovieCast> = _movieCast
 
-    fun init(id:Int) {
-        if(_movieCast.value==null){
+    fun init(id: Int) {
+        if (_movieCast.value == null) {
             setMovieDetails(id)
             setMovieCast(id)
         }
     }
 
-    private fun setMovieCast(id: Int)= viewModelScope.launch(Dispatchers.IO){
+    private fun setMovieCast(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         _movieCast.postValue(IncomingMovieCast.Loading)
-        when(val response = repository.getMovieCredits(id)){
-            is Response.Success->_movieCast.postValue(IncomingMovieCast.Success(response.data!!))
-            is Response.Error->_movieCast.postValue(IncomingMovieCast.Failure(response.data,response.errorMessage!!))
+        when (val response = repository.getMovieCredits(id)) {
+            is Response.Success -> _movieCast.postValue(IncomingMovieCast.Success(response.data!!))
+            is Response.Error -> _movieCast.postValue(
+                response.errorMessage?.let {
+                    IncomingMovieCast.Failure(
+                        response.data,
+                        it
+                    )
+                }
+            )
         }
     }
 
-    private fun setMovieDetails(id:Int)=viewModelScope.launch (Dispatchers.IO){
+    private fun setMovieDetails(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         _movieDetails.postValue(IncomingMovieDetails.Loading)
-        when(val response = repository.getMovieDetails(id)){
+        when (val response = repository.getMovieDetails(id)) {
             is Response.Success -> {
                 _movieDetails.postValue(IncomingMovieDetails.Success(response.data!!))
 
             }
             is Response.Error -> _movieDetails.postValue(
-                IncomingMovieDetails.Failure(
-                    response.data,
-                    response.errorMessage!!
-                )
+                response.errorMessage?.let {
+                    IncomingMovieDetails.Failure(
+                        response.data,
+                        it
+                    )
+                }
             )
         }
     }
 
-    fun addMovieToFavorites(id:Int,title:String,score:Double,imagePath:String){
-        val movie = MediaItem(id,title, imagePath, score)
+    fun addMovieToFavorites(id: Int, title: String, score: Double, imagePath: String) {
+        val movie = MediaItem(id, title, imagePath, score)
         repository.addToFavorites(movie)
+    }
+
+    fun addMovieToWatchlist(id: Int, title: String, movieScore: Double, movieImageSrc: String) {
+        val movie = MediaItem(id, title, movieImageSrc, movieScore)
+        repository.addToWatchlist(movie)
     }
 
 }

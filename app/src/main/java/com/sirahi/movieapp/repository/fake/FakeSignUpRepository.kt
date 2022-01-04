@@ -5,33 +5,23 @@ import com.sirahi.movieapp.presentation.util.RegError
 import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.repository.SignUpRepository
 
-class FakeSignUpRepository:SignUpRepository {
+class FakeSignUpRepository : SignUpRepository {
 
-    private val signInLiveData = MutableLiveData<RegistrationStatus>()
 
-    override fun registerUser(username: String, email: String, password: String) {
-        if(email=="admin@gmail.com"&&password=="admin123")
-            signInLiveData.value=RegistrationStatus.Success
-        else signInLiveData.value = RegistrationStatus.Failure(RegError.UnknownError())
+    override suspend fun registerUser(username: String, email: String, password: String): Boolean {
+        return email == "admin@gmail.com" && password == "admin123"
     }
 
-    override fun getRegistrationLiveData(): MutableLiveData<RegistrationStatus> {
-        signInLiveData.value=RegistrationStatus.Pending
-        return signInLiveData
-    }
-
-    override fun addUser(username: String, email: String, password: String) {
+    override suspend fun addUser(username: String, email: String, password: String) {
 
     }
 
-    override fun loginUser(email: String, password: String) {
-        if(email=="admin@gmail.com"&&password=="admin123")
-            signInLiveData.value=RegistrationStatus.Success
-        else signInLiveData.value = RegistrationStatus.Failure(RegError.UnknownError())
+    override suspend fun loginUser(email: String, password: String): Boolean {
+        return email == "admin@gmail.com" && password == "admin123"
     }
 
-    override fun checkUser() {
-        signInLiveData.value=RegistrationStatus.Pending
+    override suspend fun checkUser(): Boolean {
+        return false
     }
 
 }

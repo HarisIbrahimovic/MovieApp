@@ -1,12 +1,15 @@
 package com.sirahi.movieapp.repository.fake
 
+import androidx.lifecycle.LiveData
+import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.model.Genre
 import com.sirahi.movieapp.model.MediaResult
 import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.repository.MenuRepository
 
-class FakeMenuRepository:MenuRepository {
-
+class FakeMenuRepository//:MenuRepository
+{
+/*
     override suspend fun getMovies(category: String): Response<List<MediaResult>?> {
         val list = ArrayList<MediaResult>()
         list.add(MediaResult(1,"/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg","movie","Venom: Let There Be Carnage",7.8,"Overview","16-12-2012","/eENEf62tMXbhyVvdcXlnQz2wcuT.jpg"))
@@ -71,4 +74,20 @@ class FakeMenuRepository:MenuRepository {
         list.add(Genre(37,"Western"))
         return list
     }
+
+    override fun getWatchlistMovies(): LiveData<ArrayList<MediaItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getFavoritesMovies(): LiveData<ArrayList<MediaItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getWatchlistTv(): LiveData<ArrayList<MediaItem>> {
+        TODO("Not yet implemented")
+    }
+
+    override fun getFavoritesTv(): LiveData<ArrayList<MediaItem>> {
+        TODO("Not yet implemented")
+    }*/
 }

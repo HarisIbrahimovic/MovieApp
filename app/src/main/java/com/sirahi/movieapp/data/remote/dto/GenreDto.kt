@@ -1,8 +1,7 @@
 package com.sirahi.movieapp.data.remote.dto
 
 
-
-data class GenreDto (
+data class GenreDto(
     val id: Int,
     val name: String
-    )
+)

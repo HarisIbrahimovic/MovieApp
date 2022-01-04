@@ -14,10 +14,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         window.navigationBarColor = ContextCompat.getColor(applicationContext, R.color.black)
-        lifecycleScope.launch{
+        lifecycleScope.launch {
             delay(1500)
-            startActivity(Intent(applicationContext,SignInActivity::class.java))
+            startActivity(Intent(applicationContext, SignInActivity::class.java))
             finish()
-         }
+        }
     }
 }

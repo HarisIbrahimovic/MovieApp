@@ -43,7 +43,7 @@
                 app:tint="@color/white" />
 
             <ImageView
-                android:id="@+id/imageView3"
+                android:id="@+id/tvDetailsMenu"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_marginEnd="10dp"
@@ -70,7 +70,7 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/imageButton2"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
+                app:layout_constraintEnd_toStartOf="@+id/tvDetailsMenu"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/imageButton2"
                 app:layout_constraintTop_toTopOf="@+id/imageButton2"

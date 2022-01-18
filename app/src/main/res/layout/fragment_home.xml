@@ -113,7 +113,7 @@
                     android:layout_height="64dp"
                     android:id="@+id/firstProgressBar"
                     android:visibility="gone"
-                    app:checkLoadingMediaData="@{viewModel.popularMoviesFlow}"
+                    app:checkLoadingMediaData="@{viewModel.popularMoviesData}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

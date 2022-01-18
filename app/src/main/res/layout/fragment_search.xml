@@ -45,6 +45,7 @@
                 android:drawablePadding="10dp"
                 android:fontFamily="@font/didact_gothic"
                 android:hint="@string/search"
+                app:addOnTextChanged="@{viewModel}"
                 android:inputType="text"
                 android:paddingStart="15dp"
                 android:paddingEnd="15dp"

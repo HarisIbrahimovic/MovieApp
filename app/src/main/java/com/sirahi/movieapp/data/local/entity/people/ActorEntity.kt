@@ -17,12 +17,10 @@ data class ActorEntity(
 ){
     fun toActor():Actor{
         return Actor(
-            name = name,
-            biography = biography,
-            birthday = birthday,
-            deathday = deathday,
-            profilePath = profilePath,
-            placeOfBirth = placeOfBirth
+            _name = name,
+            _biography = biography,
+            _birthday = birthday,
+            _profilePath = profilePath,
         )
     }
 }

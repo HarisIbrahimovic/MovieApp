@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.NavController
@@ -18,35 +19,31 @@ import dagger.hilt.android.AndroidEntryPoint
 class StartLoginFragment : Fragment() {
 
     private val viewModel:SignUpViewModel by activityViewModels()
-    private var _binding: FragmentStartLoginBinding?=null
-    private val binding get()= _binding!!
-    var navController: NavController? = null
+    private lateinit var binding: FragmentStartLoginBinding
+    private lateinit var navController: NavController
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentStartLoginBinding.inflate(inflater, container, false)
+        binding = DataBindingUtil.inflate(inflater,R.layout.fragment_start_login, container, false)
+        binding.fragment=this
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel
         navController = Navigation.findNavController(view)
-        onClicks()
     }
 
-    private fun onClicks() {
-        binding.registerNowButton.setOnClickListener {
-            navController?.navigate(R.id.action_startLoginFragment_to_registerFragment)
-        }
-        binding.signInText.setOnClickListener {
-            navController?.navigate(R.id.action_startLoginFragment_to_loginFragment)
-        }
+    fun registerNavigate(){
+        navController.navigate(R.id.action_startLoginFragment_to_registerFragment)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding=null
+    fun loginNavigation(){
+        navController.navigate(R.id.action_startLoginFragment_to_loginFragment)
     }
+
 }

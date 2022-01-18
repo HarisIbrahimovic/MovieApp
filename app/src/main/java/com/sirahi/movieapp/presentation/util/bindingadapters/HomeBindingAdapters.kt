@@ -17,40 +17,6 @@ import com.sirahi.movieapp.view.adapters.TvResultAdapter
 import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
 import kotlinx.coroutines.flow.StateFlow
 
-fun checkMediaDataSuccess(incomingMediaData: IncomingMediaData?): Boolean {
-    return when (incomingMediaData) {
-        is IncomingMediaData.Success -> true
-        is IncomingMediaData.Failure -> incomingMediaData.data != null
-        else -> false
-    }
-}
-
-@BindingAdapter("setTitleNowPlaying")
-fun setTitleNowPlaying(view: TextView, incomingMediaData: IncomingMediaData?) {
-    if (checkMediaDataSuccess(incomingMediaData)) if (incomingMediaData != null) {
-        view.text = incomingMediaData.data!![0].title
-    }
-}
-
-@BindingAdapter("setImageNowPlaying")
-fun setImageNowPlaying(view: ImageView, incomingMediaData: IncomingMediaData?) {
-    if (checkMediaDataSuccess(incomingMediaData)) if (incomingMediaData != null) {
-        Glide.with(view.context)
-            .load(ApiConstants.URL_START + incomingMediaData.data!![0].posterPath)
-            .apply(RequestOptions.centerCropTransform())
-            .into(view)
-    }
-}
-
-@BindingAdapter("setBackDropNowPlaying")
-fun setBackDropNowPlaying(view: ImageView, incomingMediaData: IncomingMediaData?) {
-    if (checkMediaDataSuccess(incomingMediaData)) if (incomingMediaData != null) {
-        Glide.with(view.context)
-            .load(ApiConstants.URL_START + incomingMediaData.data!![0].backdropPath)
-            .apply(RequestOptions.centerCropTransform())
-            .into(view)
-    }
-}
 
 
 @BindingAdapter("setMovieResultAdapter")

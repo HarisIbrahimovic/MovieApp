@@ -163,6 +163,23 @@
         android:id="@+id/profileFragment"
         android:name="com.sirahi.movieapp.view.fragment.menu.ProfileFragment"
         android:label="fragment_profile"
-        tools:layout="@layout/fragment_profile" />
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment">
+            <argument
+                android:name="movieId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </action>
+        <action
+            android:id="@+id/action_profileFragment_to_TVDetailsFragment"
+            app:destination="@id/TVDetailsFragment" >
+            <argument
+                android:name="tvId"
+                app:argType="integer"
+                android:defaultValue="-1" />
+        </action>
+    </fragment>
 
 </navigation>

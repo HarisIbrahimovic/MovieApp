@@ -4,7 +4,6 @@ import com.bumptech.glide.load.HttpException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.sirahi.movieapp.data.firebase.MediaItem
-import com.sirahi.movieapp.data.local.dao.ActorTvCreditsDao
 import com.sirahi.movieapp.data.local.dao.CastDao
 import com.sirahi.movieapp.data.local.dao.TvDetailsDao
 import com.sirahi.movieapp.data.remote.ApiService
@@ -29,7 +28,6 @@ class DefaultTvDetailsRepository
             val response = apiService.getSingleTvShow(id.toString(), ApiConstants.API_KEY)
             if (response.isSuccessful && response.body() != null) {
                 tvDetailsDao.deleteTvDetails(id)
-                response.body()!!.checkNull()
                 tvDetailsDao.insertTVDetails(response.body()!!.toTVDetailsEntity())
                 tvDetails = tvDetailsDao.getTvDetails(id).toTVDetails()
                 Response.Success(tvDetails)
@@ -46,7 +44,6 @@ class DefaultTvDetailsRepository
         return try {
             val response = apiService.getTvCredits(id, ApiConstants.API_KEY)
             if (response.isSuccessful && response.body() != null) {
-                response.body()!!.cast.map { it.checkNull() }
                 castDao.deleteCast(id)
                 castDao.insertCast(response.body()!!.cast.map { it.toMovieCastEntity(id) })
                 tvStars = castDao.getCast(id)?.map { it.toMovieCast() }
@@ -63,14 +60,14 @@ class DefaultTvDetailsRepository
         val auth = FirebaseAuth.getInstance()
         val dbRef =
             FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
-        dbRef.child("FavoritesTv").child(tvShow.id.toString()).setValue(tvShow)
+        dbRef.child("Favorites").child(tvShow.id.toString()).setValue(tvShow)
     }
 
     override fun addToWatchlist(movie: MediaItem) {
         val auth = FirebaseAuth.getInstance()
         val dbRef =
             FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
-        dbRef.child("WatchlistTV").child(movie.id.toString()).setValue(movie)
+        dbRef.child("Watchlist").child(movie.id.toString()).setValue(movie)
     }
 
 }

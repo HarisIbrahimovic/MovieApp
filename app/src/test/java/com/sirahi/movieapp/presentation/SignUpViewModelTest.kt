@@ -27,7 +27,7 @@ class SignUpViewModelTest{
 
     @Test
     fun checkEmptyFieldUsername(){
-        viewModel.checkEmpty("","email","admin123")
+        viewModel.loginUser("","email","admin123")
         val value = viewModel.getSignInData().getOrAwaitValueTest()
         val compValue = RegError.EmptyField(field = "username")
         assertThat(value.error?.field).isEqualTo(compValue.field)

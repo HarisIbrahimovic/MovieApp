@@ -9,9 +9,6 @@ import androidx.navigation.ui.NavigationUI
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.ActivityMenuBinding
 import com.sirahi.movieapp.presentation.MenuViewModel
-import com.sirahi.movieapp.presentation.util.MenuStatus
-import com.sirahi.movieapp.view.fragment.menu.HomeFragment
-import com.sirahi.movieapp.view.fragment.menu.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,6 +21,7 @@ class MenuActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel
         window.navigationBarColor = ContextCompat.getColor(applicationContext, R.color.black)
         val navController = Navigation.findNavController(this, R.id.menuFrame)
         NavigationUI.setupWithNavController(binding.bottomNavigationView, navController)

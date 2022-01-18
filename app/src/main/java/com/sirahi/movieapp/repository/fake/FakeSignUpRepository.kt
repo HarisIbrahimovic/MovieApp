@@ -1,8 +1,5 @@
 package com.sirahi.movieapp.repository.fake
 
-import androidx.lifecycle.MutableLiveData
-import com.sirahi.movieapp.presentation.util.RegError
-import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.repository.SignUpRepository
 
 class FakeSignUpRepository : SignUpRepository {

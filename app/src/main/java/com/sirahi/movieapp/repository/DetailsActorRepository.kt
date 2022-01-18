@@ -1,6 +1,5 @@
 package com.sirahi.movieapp.repository
 
-import com.sirahi.movieapp.data.remote.dto.people.ActorDto
 import com.sirahi.movieapp.model.people.Actor
 import com.sirahi.movieapp.model.people.ActorMovieCredits
 import com.sirahi.movieapp.presentation.util.Response

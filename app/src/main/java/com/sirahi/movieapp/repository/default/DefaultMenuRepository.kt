@@ -1,13 +1,7 @@
 package com.sirahi.movieapp.repository.default
 
-import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
-import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.*
+import com.google.firebase.database.FirebaseDatabase
 import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.data.local.dao.MediaResultDao
 import com.sirahi.movieapp.data.remote.ApiService
@@ -16,26 +10,16 @@ import com.sirahi.movieapp.model.Genre
 import com.sirahi.movieapp.model.MediaResult
 import com.sirahi.movieapp.presentation.util.Response
 import com.sirahi.movieapp.repository.MenuRepository
-import kotlinx.coroutines.flow.callbackFlow
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
 import retrofit2.HttpException
 import java.io.IOException
-import java.lang.Exception
-import java.util.concurrent.CancellationException
-import java.util.concurrent.Flow
 import javax.inject.Inject
-import kotlin.coroutines.resumeWithException
 
 class DefaultMenuRepository @Inject constructor(
     private val mediaDao: MediaResultDao,
     private val apiService: ApiService
 ) : MenuRepository {
 
-    private val watchlistMovies = MutableLiveData<ArrayList<MediaItem>>()
-    private val watchlistTv = MutableLiveData<ArrayList<MediaItem>>()
-    private val favoriteMovies = MutableLiveData<ArrayList<MediaItem>>()
-    private val favoriteTv = MutableLiveData<ArrayList<MediaItem>>()
     private val auth = FirebaseAuth.getInstance()
 
 
@@ -69,7 +53,6 @@ class DefaultMenuRepository @Inject constructor(
             val listMediaResult = remoteMediaResult.body()?.results
             if (listMediaResult != null) {
                 mediaDao.deleteAllTV()
-                listMediaResult.map { it.checkNull() }
                 mediaDao.insertMediaResult(listMediaResult.map {
                     it.toMediaResultEntity(
                         "popular",
@@ -95,7 +78,6 @@ class DefaultMenuRepository @Inject constructor(
             val listMediaResult = remoteMediaResult.body()?.results
             if (listMediaResult != null) {
                 mediaDao.deleteAllGenre(name)
-                listMediaResult.map { it.checkPosterPath() }
                 mediaDao.insertMediaResult(listMediaResult.map {
                     it.toMediaResultEntity(
                         "selection",
@@ -117,7 +99,6 @@ class DefaultMenuRepository @Inject constructor(
             val remoteMediaResult =
                 apiService.getSearchDataMovie("movie", ApiConstants.API_KEY, query)
             if (remoteMediaResult.body() != null) {
-                remoteMediaResult.body()?.results?.map { it.checkPosterPath() }
                 val listMediaResult =
                     remoteMediaResult.body()?.results?.map { it.toMediaResult("movie") }
                 Response.Success(listMediaResult)
@@ -133,7 +114,6 @@ class DefaultMenuRepository @Inject constructor(
         return try {
             val remoteMediaResult = apiService.getSearchDataTv("tv", ApiConstants.API_KEY, query)
             if (remoteMediaResult.body() != null) {
-                remoteMediaResult.body()?.results?.map { it.checkNull() }
                 val listMediaResult =
                     remoteMediaResult.body()?.results?.map { it.toMediaResult("tv") }
                 Response.Success(listMediaResult)
@@ -145,65 +125,38 @@ class DefaultMenuRepository @Inject constructor(
         }
     }
 
-    override suspend fun getWatchlistMovies(): LiveData<ArrayList<MediaItem>> {
+
+    override suspend fun getWatchlist(): ArrayList<MediaItem> {
         val arrayList = ArrayList<MediaItem>()
-        val snapshotList = FirebaseDatabase.getInstance()
-            .getReference("Users")
-            .child(auth.currentUser!!.uid)
-            .child("WatchlistMovies")
-            .get()
-            .await()
-        for (snapshot in snapshotList.children)
-            snapshot.getValue(MediaItem::class.java)?.let { arrayList.add(it) }
-        watchlistMovies.value = arrayList
-        return watchlistMovies
-    }
-
-    override suspend fun getFavoritesMovies(): LiveData<ArrayList<MediaItem>> {
-        val arrayList = ArrayList<MediaItem>()
-        val snapshotList = FirebaseDatabase.getInstance()
-            .getReference("Users")
-            .child(auth.currentUser!!.uid)
-            .child("FavoritesMovies")
-            .get()
-            .await()
-        for (snapshot in snapshotList.children)
-            snapshot.getValue(MediaItem::class.java)?.let { arrayList.add(it) }
-        favoriteMovies.value = arrayList
-        return favoriteMovies
-    }
-
-    override suspend fun getWatchlistTv(): LiveData<ArrayList<MediaItem>> {
-        val arrayList = ArrayList<MediaItem>()
-        val snapshotList = FirebaseDatabase.getInstance()
-            .getReference("Users")
-            .child(auth.currentUser!!.uid)
-            .child("WatchlistTV")
-            .get()
-            .await()
-        for (snapshot in snapshotList.children)
-            snapshot.getValue(MediaItem::class.java)?.let { arrayList.add(it) }
-        watchlistTv.value = arrayList
-        return watchlistTv
-    }
-
-    override fun getFavoritesTv(): LiveData<ArrayList<MediaItem>> = favoriteTv
-
-
-    override suspend fun setFavoritesTv() {
-        val arrayList = ArrayList<MediaItem>()
-        try {
+        return try {
             val snapshotList = FirebaseDatabase.getInstance()
                 .getReference("Users")
                 .child(auth.currentUser!!.uid)
-                .child("FavoritesTv")
+                .child("Watchlist")
                 .get()
                 .await()
             for (snapshot in snapshotList.children)
                 snapshot.getValue(MediaItem::class.java)?.let { arrayList.add(it) }
-            favoriteTv.postValue(arrayList)
-        }catch (e:Exception){
+            arrayList
+        } catch (e: Exception) {
+            arrayList
+        }
+    }
 
+    override suspend fun getFavorites(): ArrayList<MediaItem> {
+        val arrayList = ArrayList<MediaItem>()
+        return try {
+            val snapshotList = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(auth.currentUser!!.uid)
+                .child("Favorites")
+                .get()
+                .await()
+            for (snapshot in snapshotList.children)
+                snapshot.getValue(MediaItem::class.java)?.let { arrayList.add(it) }
+            arrayList
+        } catch (e: Exception) {
+            arrayList
         }
     }
 

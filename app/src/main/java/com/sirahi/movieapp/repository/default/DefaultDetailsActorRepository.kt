@@ -47,16 +47,15 @@ constructor(
 
         return try {
             val remoteResult = apiService.getActorCredits(id, ApiConstants.API_KEY)
-            remoteResult.body()?.cast?.map { it.checkNull() }
             val result = remoteResult.body()?.cast?.map { it.toActorMovieCreditsEntity(id) }
             if (result != null) {
+                actorMovieCreditsDao.deleteCredits(id)
                 actorMovieCreditsDao.insertCredits(result)
                 actorCredits =
                     actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
                 Response.Success(actorCredits)
             } else
                 Response.Error(actorCredits, "Unknown error occurred")
-
         } catch (e: HttpException) {
             Response.Error(actorCredits, "Network error occurred")
         } catch (e: IOException) {

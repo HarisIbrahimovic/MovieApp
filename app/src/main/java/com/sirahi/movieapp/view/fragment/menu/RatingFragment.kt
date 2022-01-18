@@ -43,19 +43,18 @@ class RatingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.fragment = this
         type = arguments?.getString("type") ?: ""
         arguments?.getInt("movieId")?.let { viewModel.initData(it, type) }
         setUpRecyclerView()
         setRatingWindow()
-        onClicks()
     }
 
-    private fun onClicks() {
-        binding.addRatingButton.setOnClickListener {
-            dialog.let {
-                it.show()
-                addRatingViewOnClicks()
-            }
+
+    fun openRatingView() {
+        dialog.let {
+            it.show()
+            addRatingViewOnClicks()
         }
     }
 

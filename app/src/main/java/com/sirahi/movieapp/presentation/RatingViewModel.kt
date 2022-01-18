@@ -44,9 +44,7 @@ class RatingViewModel @Inject constructor(
             val dateInString = date.toString("dd/MM/yyyy")
             val currentUserName = userName.value
             val rating = currentUserName?.let { Rating(it, dateInString, comment, value) }
-            if (value == 0.0 || comment == "") {
-
-            } else rating?.let { repository.addMovieRating(movieId, it, type) }
-
+            if (value != 0.0 && comment != "")
+                rating?.let { repository.addMovieRating(movieId, it, type) }
         }
 }

@@ -23,18 +23,10 @@ data class TVDetailsEntity(
 ) {
     fun toTVDetails():TVDetails{
         return TVDetails(
-            inProduction,
-            firstAirDate,
-            lastAirDate,
-            name,
-            nextEpisodeToAir,
-            numberOfEpisodes,
-            numberOfSeasons,
-            overview,
-            status,
-            type,
-            voteAverage,
-            posterPath
+            _posterPath = posterPath,
+            _name = name,
+            _voteAverage = voteAverage,
+            _overview = overview
         )
     }
 }

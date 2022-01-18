@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <data>
         <variable
             name="viewModel"
@@ -7,10 +8,11 @@
         <variable
             name = "adapter"
             type="com.sirahi.movieapp.view.adapters.MovieCastAdapter"/>
+        <variable
+            name="fragment"
+            type="com.sirahi.movieapp.view.fragment.menu.details.TVDetailsFragment" />
     </data>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    <FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/black"
@@ -36,6 +38,7 @@
                 android:background="#00000000"
                 android:contentDescription="@string/todo"
                 android:elevation="15dp"
+                android:onClick="@{()->fragment.requireActivity().onBackPressed()}"
                 android:src="@drawable/left_arrow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -49,6 +52,7 @@
                 android:layout_marginEnd="10dp"
                 android:background="#00000000"
                 android:contentDescription="@string/todo"
+                android:onClick="@{()->fragment.showMenu()}"
                 android:elevation="15dp"
                 android:src="@drawable/menu_dots"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -63,7 +67,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="80dp"
                 android:ellipsize="end"
-                showTvTitle="@{viewModel.tvDetails}"
+                android:text="@{viewModel.tvDetailsObservable.name}"
                 android:layout_marginBottom="3dp"
                 android:fontFamily="@font/didact_gothic"
                 android:singleLine="true"
@@ -103,7 +107,7 @@
                     android:layout_marginTop="7dp"
                     android:layout_marginBottom="5dp"
                     android:layout_marginStart="15dp"
-                    app:showTvTitle="@{viewModel.tvDetails}"
+                    android:text="@{viewModel.tvDetailsObservable.name}"
                     android:layout_marginEnd="15dp"
                     android:fontFamily="@font/didact_gothic"
                     android:textColor="#B5B5B5"
@@ -125,11 +129,13 @@
                     <ImageView
                         android:background="@color/black"
                         android:id="@+id/backdropPathImage"
-                        app:showBackDropTv="@{viewModel.tvDetails}"
+                        setImageGlide="@{viewModel.tvDetailsObservable.posterPath}"
                         android:layout_width="match_parent"
+                        android:contentDescription="@string/todo"
                         android:layout_height="match_parent" />
 
                     <ImageView
+                        android:contentDescription="@string/todo"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:src="@drawable/shadow_effect" />
@@ -147,7 +153,8 @@
                     app:layout_constraintEnd_toEndOf="@+id/cardView"
                     app:layout_constraintStart_toStartOf="@+id/cardView"
                     app:layout_constraintTop_toTopOf="@+id/cardView"
-                    app:tint="@color/white" />
+                    app:tint="@color/white"
+                    android:contentDescription="@string/todo" />
 
                 <ImageView
                     android:id="@+id/movieImage"
@@ -155,10 +162,11 @@
                     android:layout_height="160dp"
                     android:layout_marginStart="15dp"
                     android:layout_marginBottom="5dp"
-                    app:showPosterImageTv="@{viewModel.tvDetails}"
+                    app:setImageGlide="@{viewModel.tvDetailsObservable.posterPath}"
                     android:elevation="10dp"
                     app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:contentDescription="@string/todo" />
 
 
                 <RatingBar
@@ -191,7 +199,8 @@
                     android:textColor="@color/red"
                     android:textSize="25sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieFullNameDetails" />
+                    app:layout_constraintTop_toBottomOf="@+id/movieFullNameDetails"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:id="@+id/movieOverview"
@@ -199,7 +208,7 @@
                     android:layout_height="wrap_content"
                     android:paddingStart="15dp"
                     android:paddingTop="3dp"
-                    app:showOverviewTv= "@{viewModel.tvDetails}"
+                    android:text="@{viewModel.tvDetailsObservable.overview}"
                     android:paddingEnd="15dp"
                     android:paddingBottom="15dp"
                     android:background="@color/darkerGray"
@@ -229,16 +238,20 @@
                     app:layout_constraintBottom_toTopOf="@+id/starsRecyclerView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/movieOverview" />
+                    app:layout_constraintTop_toBottomOf="@+id/movieOverview"
+                    tools:ignore="RtlSymmetry" />
 
                 <androidx.recyclerview.widget.RecyclerView
+                    app:setCastAdapter="@{adapter}"
+                    app:setCastList="@{adapter}"
+                    app:setList="@{viewModel.tvCastObservable.castList}"
+                    app:showError="@{viewModel.tvCastObservable.errorMessage}"
                     android:id="@+id/starsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/darkerGray"
                     android:paddingStart="-5dp"
                     android:orientation="horizontal"
-                    app:setCastAdapter="@{adapter}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     android:paddingTop="5dp"
                     android:paddingBottom="15dp"

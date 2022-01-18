@@ -1,11 +1,12 @@
 package com.sirahi.movieapp.hilt
 
-import com.google.firebase.auth.FirebaseAuth
-import com.sirahi.movieapp.data.local.dao.*
-import com.sirahi.movieapp.data.remote.ApiService
-import com.sirahi.movieapp.presentation.usecases.GetPopularMoviesUseCase
+import com.sirahi.movieapp.presentation.usecases.*
+import com.sirahi.movieapp.presentation.usecases.details.*
+import com.sirahi.movieapp.presentation.usecases.details.actor.GetActorDetailsUseCase
+import com.sirahi.movieapp.presentation.usecases.details.actor.GetActorMovieCreditsUseCase
+import com.sirahi.movieapp.presentation.usecases.details.tv.GetTvDetailsUseCase
+import com.sirahi.movieapp.presentation.usecases.signup.SignUpUseCase
 import com.sirahi.movieapp.repository.*
-import com.sirahi.movieapp.repository.default.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,46 +17,59 @@ import dagger.hilt.android.components.ViewModelComponent
 object LifeCycleModule {
 
     @Provides
-    fun provideGetPopularMoviesUseCase(repository: MenuRepository): GetPopularMoviesUseCase =
-        GetPopularMoviesUseCase(repository)
+    fun provideGetMoviesByCategory(repository: MenuRepository): GetMoviesByCategoryUseCase =
+        GetMoviesByCategoryUseCase(repository)
 
     @Provides
-    fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
+    fun provideGetTvByCategory(repository: MenuRepository): GetTvByCategoryUseCase =
+        GetTvByCategoryUseCase(repository)
 
     @Provides
-    fun provideSignUpRepository(firebaseAuth: FirebaseAuth): SignUpRepository =
-        DefaultSignUpRepository(firebaseAuth)
+    fun provideDiscoverUseCase(repository: MenuRepository): DiscoverMoviesUseCase =
+        DiscoverMoviesUseCase(repository)
 
     @Provides
-    fun provideRatingRepository(firebaseAuth: FirebaseAuth): RatingRepository =
-        DefaultRatingRepository(firebaseAuth)
-
-
-    @Provides
-    fun provideMenuRepository(mediaDao: MediaResultDao, apiService: ApiService): MenuRepository =
-        DefaultMenuRepository(mediaDao, apiService)
+    fun provideSearchUseCase(repository: MenuRepository): SearchUseCase =
+        SearchUseCase(repository)
 
     @Provides
-    fun provideDetailsActorRepository(
-        apiService: ApiService,
-        actorDao: ActorDao,
-        actorMovieCreditsDao: ActorMovieCreditsDao
-    ): DetailsActorRepository =
-        DefaultDetailsActorRepository(apiService, actorDao, actorMovieCreditsDao)
+    fun provideGenreUseCase(repository: MenuRepository): GetGenresUseCase =
+        GetGenresUseCase(repository)
 
     @Provides
-    fun provideTvDetailsRepository(
-        apiService: ApiService,
-        tvDetailsDao: TvDetailsDao,
-        castDao: CastDao,
-    ): DetailsTvRepository =
-        DefaultTvDetailsRepository(apiService, tvDetailsDao, castDao)
+    fun provideUserListUseCase(repository: MenuRepository): UserListsUseCase =
+        UserListsUseCase(repository)
+
+    @Provides
+    fun provideSignUpUseCase(repository: SignUpRepository): SignUpUseCase =
+        SignUpUseCase(repository)
 
 
     @Provides
-    fun provideDetailsMovieRepository(
-        movieDetailsDao: MovieDetailsDao,
-        castDao: CastDao,
-        apiService: ApiService
-    ): DetailMovieRepository = DefaultMovieDetailsRepository(movieDetailsDao, castDao, apiService)
+    fun provideMovieDetailsUseCase(repository: DetailMovieRepository): GetMovieDetailsUseCase =
+        GetMovieDetailsUseCase(repository)
+
+    @Provides
+    fun provideMovieCastUseCase(repository: DetailMovieRepository): GetMovieCastUseCase =
+        GetMovieCastUseCase(repository)
+
+
+    @Provides
+    fun provideAddToWatchlistUseCase(repository: DetailMovieRepository): AddWatchlistToListUseCase =
+        AddWatchlistToListUseCase(repository)
+
+    @Provides
+    fun provideGetActorDetailsUseCase(repository: DetailsActorRepository): GetActorDetailsUseCase =
+        GetActorDetailsUseCase(repository)
+
+    @Provides
+    fun provideGetActorMovieCreditsUseCase(repository: DetailsActorRepository): GetActorMovieCreditsUseCase =
+        GetActorMovieCreditsUseCase(repository)
+
+    @Provides
+    fun provideGetTvDetailsUseCase(repository: DetailsTvRepository):GetTvDetailsUseCase=
+        GetTvDetailsUseCase(repository)
+
+
+
 }

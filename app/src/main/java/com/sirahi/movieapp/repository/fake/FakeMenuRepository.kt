@@ -1,12 +1,5 @@
 package com.sirahi.movieapp.repository.fake
 
-import androidx.lifecycle.LiveData
-import com.sirahi.movieapp.data.firebase.MediaItem
-import com.sirahi.movieapp.model.Genre
-import com.sirahi.movieapp.model.MediaResult
-import com.sirahi.movieapp.presentation.util.Response
-import com.sirahi.movieapp.repository.MenuRepository
-
 class FakeMenuRepository//:MenuRepository
 {
 /*

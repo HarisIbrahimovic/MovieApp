@@ -50,7 +50,6 @@ constructor(
             val result = response.body()?.cast
             if (result != null) {
                 castDao.deleteCast(id)
-                result.map { it.checkNull() }
                 castDao.insertCast(result.map { it.toMovieCastEntity(id) })
                 cast = castDao.getCast(id).map { it.toMovieCast() }
                 Response.Success(cast)
@@ -67,14 +66,14 @@ constructor(
         val auth = FirebaseAuth.getInstance()
         val dbRef =
             FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
-        dbRef.child("FavoritesMovies").child(mediaItem.id.toString()).setValue(mediaItem)
+        dbRef.child("Favorites").child(mediaItem.id.toString()).setValue(mediaItem)
     }
 
     override fun addToWatchlist(movie: MediaItem) {
         val auth = FirebaseAuth.getInstance()
         val dbRef =
             FirebaseDatabase.getInstance().getReference("Users").child(auth.currentUser!!.uid)
-        dbRef.child("WatchlistMovies").child(movie.id.toString()).setValue(movie)
+        dbRef.child("Watchlist").child(movie.id.toString()).setValue(movie)
     }
 
 

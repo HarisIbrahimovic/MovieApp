@@ -1,168 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.sirahi.movieapp.presentation.MenuViewModel" />
+
+        <variable
+            name="watchListAdapter"
+            type="com.sirahi.movieapp.view.adapters.UserListAdapter" />
+
+        <variable
+            name="favListAdapter"
+            type="com.sirahi.movieapp.view.adapters.UserListAdapter" />
+
+    </data>
+
+    <FrameLayout xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black"
         tools:context=".view.fragment.menu.ProfileFragment">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            tools:ignore="UselessParent">
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="15dp"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/user_icon_solid"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/didact_gothic"
-                android:text="Haris Ibrahimovic"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@+id/imageView3"
-                app:layout_constraintStart_toEndOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="@+id/imageView3" />
-
-            <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_margin="15dp"
-                android:src="@drawable/ic_settings"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
-
-
-            <TextView
-                android:id="@+id/watchlistMText"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:background="@color/darkerGray"
-                android:fontFamily="@font/didact_gothic"
-                android:paddingStart="15dp"
-                android:paddingTop="1dp"
-                android:text="@string/watchlist_movies"
-                android:textColor="@color/red"
-                android:textSize="25sp"
-                app:layout_constraintTop_toBottomOf="@+id/imageView3"
-                tools:ignore="RtlSymmetry" />
+                android:layout_height="wrap_content">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/watchlistMRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/darkerGray"
-                android:orientation="horizontal"
-                android:paddingStart="-5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/watchlistMText"
-                tools:ignore="RtlSymmetry" />
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="15dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/user_icon_solid"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/didact_gothic"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/imageView3" />
 
-            <TextView
-                android:id="@+id/watchTvText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@color/darkerGray"
-                android:fontFamily="@font/didact_gothic"
-                android:paddingStart="15dp"
-                android:paddingTop="1dp"
-                android:text="@string/watchlist_tv_shows"
-                android:textColor="@color/red"
-                android:textSize="25sp"
-                app:layout_constraintTop_toBottomOf="@+id/watchlistMRecyclerView"
-                tools:ignore="RtlSymmetry" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/watchTvRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/darkerGray"
-                android:orientation="horizontal"
-                android:paddingStart="-5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/watchTvText"
-                tools:ignore="RtlSymmetry" />
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_margin="15dp"
+                    android:contentDescription="@string/todo"
+                    android:src="@drawable/log_out"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:tint="@color/white" />
 
 
-            <TextView
-                android:id="@+id/favMText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@color/darkerGray"
-                android:fontFamily="@font/didact_gothic"
-                android:paddingStart="15dp"
-                android:paddingTop="1dp"
-                android:text="@string/favorite_movies"
-                android:textColor="@color/red"
-                android:textSize="25sp"
-                app:layout_constraintTop_toBottomOf="@+id/watchTvRecView"
-                tools:ignore="RtlSymmetry" />
+                <TextView
+                    android:id="@+id/watchlistMText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:background="@color/darkerGray"
+                    android:fontFamily="@font/didact_gothic"
+                    android:paddingStart="15dp"
+                    android:paddingTop="1dp"
+                    android:text="@string/watchlist_no_caps"
+                    android:textColor="@color/red"
+                    android:textSize="25sp"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView3"
+                    tools:ignore="RtlSymmetry" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favMRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/darkerGray"
-                android:orientation="horizontal"
-                android:paddingStart="-5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/favMText"
-                tools:ignore="RtlSymmetry" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/watchlistRecyclerView"
+                    setList="@{viewModel.userWatchList}"
+                    setUserList="@{watchListAdapter}"
+                    setUserListAdapter="@{watchListAdapter}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkerGray"
+                    android:orientation="horizontal"
+                    android:paddingStart="-5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/watchlistMText"
+                    tools:ignore="RtlSymmetry" />
 
 
-            <TextView
-                android:id="@+id/FavTvText"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:background="@color/darkerGray"
-                android:fontFamily="@font/didact_gothic"
-                android:paddingStart="15dp"
-                android:paddingTop="1dp"
-                android:text="@string/favorite_tv_show"
-                android:textColor="@color/red"
-                android:textSize="25sp"
-                app:layout_constraintTop_toBottomOf="@+id/favMRecView"
-                tools:ignore="RtlSymmetry" />
+                <TextView
+                    android:id="@+id/watchTvText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:background="@color/darkerGray"
+                    android:fontFamily="@font/didact_gothic"
+                    android:paddingStart="15dp"
+                    android:paddingTop="1dp"
+                    android:text="@string/favorites_no_caps"
+                    android:textColor="@color/red"
+                    android:textSize="25sp"
+                    app:layout_constraintTop_toBottomOf="@+id/watchlistRecyclerView"
+                    tools:ignore="RtlSymmetry" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/favTvRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/darkerGray"
-                android:orientation="horizontal"
-                android:paddingStart="-5dp"
-                android:paddingTop="5dp"
-                android:paddingBottom="15dp"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@+id/FavTvText"
-                tools:ignore="RtlSymmetry" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/favRecView"
+                    setList="@{viewModel.userFavList}"
+                    setUserList="@{favListAdapter}"
+                    setUserListAdapter="@{favListAdapter}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/darkerGray"
+                    android:orientation="horizontal"
+                    android:paddingStart="-5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="15dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/watchTvText"
+                    tools:ignore="RtlSymmetry" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </ScrollView>
 
 
     </FrameLayout>

@@ -1,19 +1,10 @@
 package com.sirahi.movieapp.repository.default
 
-import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.tasks.Task
-import com.google.common.util.concurrent.ListenableFuture
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.sirahi.movieapp.presentation.util.RegError
-import com.sirahi.movieapp.presentation.util.RegistrationStatus
 import com.sirahi.movieapp.repository.SignUpRepository
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.tasks.await
-import java.util.concurrent.CancellationException
 import javax.inject.Inject
-import kotlin.coroutines.resumeWithException
 
 class DefaultSignUpRepository
 @Inject

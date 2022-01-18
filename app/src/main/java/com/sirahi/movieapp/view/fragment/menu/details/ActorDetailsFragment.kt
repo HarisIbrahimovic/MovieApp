@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,9 +12,9 @@ import androidx.navigation.Navigation
 import com.sirahi.movieapp.R
 import com.sirahi.movieapp.databinding.FragmentActorDetailsBinding
 import com.sirahi.movieapp.presentation.ActorDetailsViewModel
-import com.sirahi.movieapp.presentation.util.incomingdata.IncomingActorMovieCredits
 import com.sirahi.movieapp.view.adapters.ActorMovieCreditsAdapter
 import com.sirahi.movieapp.view.adapters.MovieResultAdapter
+import com.sirahi.movieapp.view.fragment.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -24,8 +23,7 @@ class ActorDetailsFragment : Fragment(), MovieResultAdapter.ClickListener {
     private val viewModel: ActorDetailsViewModel by viewModels()
     private lateinit var binding: FragmentActorDetailsBinding
     private lateinit var adapter: ActorMovieCreditsAdapter
-
-    private var navController: NavController? = null
+    private lateinit var navController: NavController
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -40,27 +38,16 @@ class ActorDetailsFragment : Fragment(), MovieResultAdapter.ClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-        adapter = ActorMovieCreditsAdapter(requireContext(), this)
         arguments?.getInt("actorId")?.let { viewModel.setActorData(it) }
+        adapter = ActorMovieCreditsAdapter(requireContext(), this)
         binding.movieAdapter = adapter
-        observe()
-
+        binding.fragment = this
+        navController = Navigation.findNavController(view)
     }
 
-    private fun observe() {
-        viewModel.actorCredits.observe(viewLifecycleOwner, {
-            when (it) {
-                is IncomingActorMovieCredits.Success -> adapter.setList(it.data)
-                is IncomingActorMovieCredits.Failure -> if (it.data != null) adapter.setList(it.data)
-                else -> Unit
-            }
-        })
-    }
 
     override fun onMovieClikced(id: Int) {
-        val bundle = bundleOf("movieId" to id)
-        navController?.navigate(R.id.action_actorDetailsFragment_to_movieDetailsFragment, bundle)
+        navigateTo(navController,R.id.action_actorDetailsFragment_to_movieDetailsFragment,"movieId",id)
     }
 
 }

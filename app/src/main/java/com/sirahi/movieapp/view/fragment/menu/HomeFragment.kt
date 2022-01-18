@@ -4,12 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.sirahi.movieapp.R
@@ -19,23 +16,20 @@ import com.sirahi.movieapp.view.adapters.GenreAdapter
 import com.sirahi.movieapp.view.adapters.MovieResultAdapter
 import com.sirahi.movieapp.view.adapters.TvResultAdapter
 import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
+import com.sirahi.movieapp.view.fragment.util.navigateTo
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.ClickListener,
     TvResultAdapter.TvClickListener, VerticalMediaAdapter.OnVerticalMediaClicked {
 
     private val viewModel: MenuViewModel by activityViewModels()
+    private lateinit var navController: NavController
     private lateinit var binding: FragmentHomeBinding
-    private var navController: NavController? = null
-
     private lateinit var discoverAdapter: VerticalMediaAdapter
     private lateinit var mAdapter: MovieResultAdapter
-    private lateinit var genreAdapter: GenreAdapter
     private lateinit var tvAdapter: TvResultAdapter
+    private lateinit var genreAdapter: GenreAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -53,12 +47,6 @@ class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.
         navController = Navigation.findNavController(view)
         setAdapters()
         observe()
-
-        lifecycleScope.launchWhenStarted {
-            viewModel.popularMoviesFlow.collect {
-                it.data?.let { list -> mAdapter.setList(list) }
-            }
-        }
     }
 
     private fun setAdapters() {
@@ -73,32 +61,36 @@ class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.
     }
 
     private fun observe() {
-        //viewModel.popularMoviesData.observe(viewLifecycleOwner, { if(it?.data != null)mAdapter.setList(it.data) })
-        viewModel.popularTvData.observe(
-            viewLifecycleOwner,
-            { if (it?.data != null) tvAdapter.setList(it.data) })
-        viewModel.discoverData.observe(
-            viewLifecycleOwner,
-            { if (it?.data != null) discoverAdapter.setList(it.data) })
-        viewModel.genreList.observe(viewLifecycleOwner, { genreAdapter.setList(it) })
-    }
+        viewModel.genreList.observe(viewLifecycleOwner, {
+            genreAdapter.setList(it)
+        })
 
-    override fun onMovieClikced(id: Int) {
-        val bundle = bundleOf("movieId" to id)
-        navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
+        viewModel.popularMoviesData.observe(viewLifecycleOwner, {
+            it.data?.let { list -> mAdapter.setList(list) }
+        })
+
+        viewModel.popularTvData.observe(viewLifecycleOwner, {
+            it.data?.let { list -> tvAdapter.setList(list) }
+        })
+
+        viewModel.discoverData.observe(viewLifecycleOwner, {
+            it.data?.let { list -> discoverAdapter.setList(list) }
+        })
     }
 
     override fun genreClicked(id: Int) {
         viewModel.setSelectedGenre(id)
     }
 
+    override fun onMovieClikced(id: Int) {
+        navigateTo(navController, R.id.action_homeFragment_to_movieDetailsFragment, "movieId", id)
+    }
+
     override fun onTvClicked(id: Int) {
-        val bundle = bundleOf("tvId" to id)
-        navController?.navigate(R.id.action_homeFragment_to_TVDetailsFragment, bundle)
+        navigateTo(navController, R.id.action_homeFragment_to_TVDetailsFragment, "tvId", id)
     }
 
     override fun onVerticalItemClicked(id: Int, type: String) {
-        val bundle = bundleOf("movieId" to id)
-        navController?.navigate(R.id.action_homeFragment_to_movieDetailsFragment, bundle)
+        navigateTo(navController, R.id.action_homeFragment_to_movieDetailsFragment, "movieId", id)
     }
 }

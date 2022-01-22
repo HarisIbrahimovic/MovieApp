@@ -1,9 +1,15 @@
 package com.sirahi.movieapp.repository.fake
 
-class FakeMenuRepository//:MenuRepository
+import com.sirahi.movieapp.data.firebase.MediaItem
+import com.sirahi.movieapp.model.Genre
+import com.sirahi.movieapp.model.MediaResult
+import com.sirahi.movieapp.presentation.util.Response
+import com.sirahi.movieapp.repository.MenuRepository
+
+class FakeMenuRepository: MenuRepository
 {
-/*
-    override suspend fun getMovies(category: String): Response<List<MediaResult>?> {
+
+    override suspend fun getMovies(category: String): Response<List<MediaResult>> {
         val list = ArrayList<MediaResult>()
         list.add(MediaResult(1,"/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg","movie","Venom: Let There Be Carnage",7.8,"Overview","16-12-2012","/eENEf62tMXbhyVvdcXlnQz2wcuT.jpg"))
         list.add(MediaResult(2,"/4j0PNHkMr5ax3IA8tjtxcmPU3QT.jpg","movie","Encanto",7.8,"Overview","16-12-2012","/5RuR7GhOI5fElADXZb0X2sr9w5n.jpg"))
@@ -11,7 +17,7 @@ class FakeMenuRepository//:MenuRepository
         return Response.Success(list)
     }
 
-    override suspend fun getTv(category: String): Response<List<MediaResult>?> {
+    override suspend fun getTv(category: String): Response<List<MediaResult>> {
         val list = ArrayList<MediaResult>()
         list.add(MediaResult(1,"/pqzjCxPVc9TkVgGRWeAoMmyqkZV.jpg","movie","Hawkeye",7.8,"Overview","16-12-2012","/1R68vl3d5s86JsS2NPjl8UoMqIS.jpg"))
         list.add(MediaResult(2,"/iF8ai2QLNiHV4anwY1TuSGZXqfN.jpg","movie","Chucky",5.6,"Overview","16-12-2012","/xAKMj134XHQVNHLC6rWsccLMenG.jpg"))
@@ -19,7 +25,7 @@ class FakeMenuRepository//:MenuRepository
         return Response.Success(list)
     }
 
-    override suspend fun discoverMovies(id: Int, name: String): Response<List<MediaResult>?> {
+    override suspend fun discoverMovies(id: Int, name: String): Response<List<MediaResult>> {
         val list = ArrayList<MediaResult>()
         if(id==1){
             list.add(MediaResult(1,"/rjkmN1dniUHVYAtwuV3Tji7FsDO.jpg","movie","Venom: Let There Be Carnage",7.8,"Overview","16-12-2012","/eENEf62tMXbhyVvdcXlnQz2wcuT.jpg"))
@@ -42,6 +48,18 @@ class FakeMenuRepository//:MenuRepository
             list.add(MediaResult(1,"/pqzjCxPVc9TkVgGRWeAoMmyqkZV.jpg","movie","Hawkeye",7.8,"Overview","16-12-2012","/1R68vl3d5s86JsS2NPjl8UoMqIS.jpg"))
         }else if(query=="Chucky") list.add(MediaResult(2,"/iF8ai2QLNiHV4anwY1TuSGZXqfN.jpg","movie","Chucky",5.6,"Overview","16-12-2012","/xAKMj134XHQVNHLC6rWsccLMenG.jpg"))
         return Response.Success(list)
+    }
+
+    override suspend fun getWatchlist(): ArrayList<MediaItem> {
+        return ArrayList()
+    }
+
+    override suspend fun getFavorites(): ArrayList<MediaItem> {
+        return ArrayList()
+    }
+
+    override suspend fun getUserName(): String {
+        return "username"
     }
 
     override fun getGenreList(): ArrayList<Genre> {
@@ -67,20 +85,4 @@ class FakeMenuRepository//:MenuRepository
         list.add(Genre(37,"Western"))
         return list
     }
-
-    override fun getWatchlistMovies(): LiveData<ArrayList<MediaItem>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getFavoritesMovies(): LiveData<ArrayList<MediaItem>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getWatchlistTv(): LiveData<ArrayList<MediaItem>> {
-        TODO("Not yet implemented")
-    }
-
-    override fun getFavoritesTv(): LiveData<ArrayList<MediaItem>> {
-        TODO("Not yet implemented")
-    }*/
 }

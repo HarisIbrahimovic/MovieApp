@@ -86,7 +86,6 @@ class TVDetailsFragment : Fragment(), MovieCastAdapter.ActorClickListener {
         navController.navigate(R.id.action_TVDetailsFragment_to_ratingFragment, bundle)
     }
 
-
     override fun onActorClicked(id: Int) {
         navigateTo(
             navController,
@@ -95,4 +94,5 @@ class TVDetailsFragment : Fragment(), MovieCastAdapter.ActorClickListener {
             id
         )
     }
+
 }

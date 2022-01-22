@@ -2,12 +2,10 @@ package com.sirahi.movieapp.presentation.util.bindingadapters
 
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.sirahi.movieapp.model.movie.MovieCast
-import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieDetails
 import com.sirahi.movieapp.view.adapters.MovieCastAdapter
 
 
@@ -23,7 +21,7 @@ fun setImageGlide(view: ImageView, url: String) {
 
 
 @BindingAdapter("setCastList", "setList")
-fun setCastList(view:RecyclerView,adapter: MovieCastAdapter, list: ArrayList<MovieCast>) {
+fun RecyclerView.setCastList(adapter: MovieCastAdapter, list: ArrayList<MovieCast>) {
     adapter.setList(list)
 }
 

@@ -5,6 +5,9 @@
             name="viewModel"
             type="com.sirahi.movieapp.presentation.MenuViewModel" />
         <variable
+            name="fragment"
+            type="com.sirahi.movieapp.view.fragment.menu.HomeFragment"/>
+        <variable
             name="genreAdapter"
             type="com.sirahi.movieapp.view.adapters.GenreAdapter" />
         <variable
@@ -65,6 +68,7 @@
                 android:layout_height="24dp"
                 android:layout_marginTop="2dp"
                 android:src="@drawable/menu_dots"
+                android:onClick="@{()-> fragment.openCredits()}"
                 app:layout_constraintBottom_toBottomOf="@+id/textView5"
                 app:layout_constraintEnd_toEndOf="parent"
                 android:layout_marginEnd="15dp"
@@ -100,6 +104,8 @@
                     android:layout_height="280dp"
                     android:orientation="horizontal"
                     app:setMovieResultAdapter="@{movieResultAdapter}"
+                    setMovieList="@{movieResultAdapter}"
+                    setList="@{viewModel.popularMoviesObservable.mediaList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +119,7 @@
                     android:layout_height="64dp"
                     android:id="@+id/firstProgressBar"
                     android:visibility="gone"
-                    app:checkLoadingMediaData="@{viewModel.popularMoviesData}"
+                    checkLoading="@{viewModel.popularMoviesObservable.loadingState}"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -151,6 +157,8 @@
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
                     app:setTvResultAdapter="@{tvResultAdapter}"
+                    setTvList="@{tvResultAdapter}"
+                    setList="@{viewModel.popularTvObservable.mediaList}"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -164,8 +172,8 @@
                     android:layout_width="64dp"
                     android:layout_height="64dp"
                     android:layout_marginTop="136dp"
+                    checkLoading="@{viewModel.popularTvObservable.loadingState}"
                     android:visibility="gone"
-                    app:checkLoadingMediaData="@{viewModel.popularTvData}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.498"
@@ -214,7 +222,7 @@
                     android:layout_height="64dp"
                     android:elevation="15dp"
                     android:visibility="gone"
-                    app:checkLoadingMediaData="@{viewModel.discoverData}"
+                    checkLoadingLiveData="@{viewModel.discoverData}"
                     app:layout_constraintBottom_toBottomOf="@+id/discoverRecyclerView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"

@@ -6,7 +6,7 @@ import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.model.movie.MovieDetails
 import com.sirahi.movieapp.presentation.usecases.details.AddWatchlistToListUseCase
 import com.sirahi.movieapp.presentation.usecases.details.GetMovieCastUseCase
-import com.sirahi.movieapp.presentation.usecases.details.GetMovieDetailsUseCase
+import com.sirahi.movieapp.presentation.usecases.details.movies.GetMovieDetailsUseCase
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaCast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers

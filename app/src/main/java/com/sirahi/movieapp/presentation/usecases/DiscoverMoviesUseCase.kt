@@ -24,14 +24,12 @@ constructor(
                 )
             }
             is Response.Error ->
-                response.errorMessage?.let {
-                    emit(
-                        IncomingMediaData.Failure(
-                            response.data,
-                            it
-                        )
+                emit(
+                    IncomingMediaData.Failure(
+                        response.data,
+                        response.errorMessage
                     )
-                }
+                )
         }
     }
 }

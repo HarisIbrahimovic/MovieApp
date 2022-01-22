@@ -1,13 +1,16 @@
 package com.sirahi.movieapp.presentation
 
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sirahi.movieapp.data.firebase.MediaItem
 import com.sirahi.movieapp.model.Genre
 import com.sirahi.movieapp.model.MediaResult
 import com.sirahi.movieapp.presentation.usecases.*
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
+import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaDataDelegates
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -21,20 +24,23 @@ class MenuViewModel
 @Inject
 constructor(
     userListsUseCase: UserListsUseCase,
-    getMoviesByCategory: GetMoviesByCategoryUseCase,
-    getTvByCategoryUseCase: GetTvByCategoryUseCase,
+    private val getMoviesByCategory: GetMoviesByCategoryUseCase,
+    private val getTvByCategoryUseCase: GetTvByCategoryUseCase,
+    private val getUserNameUseCase: GetUserNameUseCase,
     private val discoverMoviesUseCase: DiscoverMoviesUseCase,
     private val searchUseCase: SearchUseCase,
     private val getGenresUseCase: GetGenresUseCase
 ) : ViewModel() {
 
+    var userWatchList = ArrayList<MediaItem>()
+    var userFavList = ArrayList<MediaItem>()
 
-    var userWatchList = userListsUseCase.getWatchlist()
-    var userFavList = userListsUseCase.getFavorite()
+    var userName = ObservableField("")
 
-    var popularMoviesData = getMoviesByCategory.invoke("popular")
-    val popularTvData = getTvByCategoryUseCase.invoke("popular")
-    var nowPlayingData = getMoviesByCategory.invoke("now_playing")
+    var nowPlayingMoviesObservable = IncomingMediaDataDelegates()
+    var popularMoviesObservable = IncomingMediaDataDelegates()
+    var popularTvObservable = IncomingMediaDataDelegates()
+
 
     private val _discoverData = MutableLiveData<IncomingMediaData>()
     var discoverData: LiveData<IncomingMediaData> = _discoverData
@@ -49,9 +55,29 @@ constructor(
     private var searchJob: Job? = null
 
     init {
+        viewModelScope.launch (Dispatchers.IO){
+            setPopularTvObservable()
+            setPopularMoviesObservable()
+            userWatchList = userListsUseCase.getWatchlist()
+            userFavList = userListsUseCase.getFavorite()
+            nowPlayingMoviesObservable.setValues(getMoviesByCategory.invoke("now_playing"))
+            userName.set(getUserNameUseCase.invoke())
+        }
         _genreList.postValue(getGenresUseCase.list)
-        onSearch("Batman")
         getDiscoverData(28, "Action")
+        onSearch("Batman")
+    }
+
+    private suspend fun setPopularMoviesObservable() {
+        popularMoviesObservable.loadingState=true
+        popularMoviesObservable.setValues(getMoviesByCategory.invoke("popular"))
+        popularMoviesObservable.loadingState=false
+    }
+
+    private suspend fun setPopularTvObservable() {
+        popularTvObservable.loadingState=true
+        popularTvObservable.setValues(getTvByCategoryUseCase.invoke("popular"))
+        popularTvObservable.loadingState=false
     }
 
     private fun getDiscoverData(id: Int, name: String) = viewModelScope.launch(Dispatchers.IO) {

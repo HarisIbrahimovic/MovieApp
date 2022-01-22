@@ -3,6 +3,7 @@ package com.sirahi.movieapp.model.tv
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.sirahi.movieapp.BR
+import kotlin.properties.Delegates
 
 data class TVDetails(
     var _name: String = "",
@@ -19,43 +20,19 @@ data class TVDetails(
         posterPath= tvDetails.posterPath
     }
 
-    var name: String
-        @Bindable get() = _name
-        set(value) {
-            _name = value
-            notifyPropertyChanged(BR.name)
-        }
+    @get:Bindable
+    var name: String by Delegates.observable(_name){ _, _, _->notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.name) }
 
-    var overview: String
-        @Bindable get() = _overview
-        set(value) {
-            _overview = value
-            notifyPropertyChanged(BR.overview)
-        }
+    @get:Bindable
+    var overview: String by Delegates.observable(_overview){ _, _, _->notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.overview) }
 
+    @get:Bindable
+    var posterPath: String by Delegates.observable(_posterPath){ _, _, _->notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.posterPath)}
 
-    var posterPath: String
-        @Bindable get() = _posterPath
-        set(value) {
-            _posterPath = value
-            notifyPropertyChanged(BR.posterPath)
-        }
+    @get:Bindable
+    var backdropPath: String by Delegates.observable(_backdropPath){ _, _, _->notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.backdropPath)}
 
-    var backdropPath: String
-        @Bindable get() = _backdropPath
-        set(value) {
-            _backdropPath = value
-            notifyPropertyChanged(BR.backdropPath)
-        }
-
-
-
-
-    var voteAverage: Double
-        @Bindable get() = _voteAverage
-        set(value) {
-            _voteAverage = value
-            notifyPropertyChanged(BR.voteAverage)
-        }
+    @get:Bindable
+    var voteAverage: Double by Delegates.observable(_voteAverage){ _, _, _->notifyPropertyChanged(androidx.databinding.library.baseAdapters.BR.voteAverage)}
 
 }

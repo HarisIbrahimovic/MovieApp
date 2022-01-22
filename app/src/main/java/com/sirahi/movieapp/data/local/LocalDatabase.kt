@@ -24,7 +24,6 @@ import com.sirahi.movieapp.data.local.entity.tv.TVDetailsEntity
 abstract class LocalDatabase :RoomDatabase(){
     abstract fun actorDao(): ActorDao
     abstract fun actorMovieCreditsDao(): ActorMovieCreditsDao
-    abstract fun actorTvCreditsDao(): ActorTvCreditsDao
     abstract fun castDao(): CastDao
     abstract fun mediaResultDao(): MediaResultDao
     abstract fun movieDetailsDao(): MovieDetailsDao

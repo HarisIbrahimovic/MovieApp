@@ -3,6 +3,7 @@ package com.sirahi.movieapp.model.movie
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import kotlin.properties.Delegates
 
 data class MovieDetails(
     val releaseDate: String = "",
@@ -14,41 +15,20 @@ data class MovieDetails(
     var _backdropPath: String = ""
 ) : BaseObservable() {
 
-    var title: String
-        @Bindable get() = _title
-        set(value) {
-            _title = value
-            notifyPropertyChanged(BR.title)
-        }
+    @get:Bindable
+    var title: String by Delegates.observable(_title){ _, _, _->notifyPropertyChanged(BR.title) }
 
-    var overview: String
-        @Bindable get() = _overview
-        set(value) {
-            _overview = value
-            notifyPropertyChanged(BR.overview)
-        }
+    @get:Bindable
+    var overview: String by Delegates.observable(_overview){ _, _, _->notifyPropertyChanged(BR.overview) }
 
-    var posterPath: String
-        @Bindable get() = _posterPath
-        set(value) {
-            _posterPath = value
-            notifyPropertyChanged(BR.posterPath)
-        }
+    @get:Bindable
+    var posterPath: String by Delegates.observable(_posterPath){ _, _, _->notifyPropertyChanged(BR.posterPath)}
 
-    var backdropPath: String
-        @Bindable get() = _backdropPath
-        set(value) {
-            _backdropPath = value
-            notifyPropertyChanged(BR.backdropPath)
-        }
+    @get:Bindable
+    var backdropPath: String by Delegates.observable(_backdropPath){ _, _, _->notifyPropertyChanged(BR.backdropPath)}
 
-    var voteAverage: Double
-        @Bindable get() = _voteAverage
-        set(value) {
-            _voteAverage = value
-            notifyPropertyChanged(BR.voteAverage)
-        }
-
+    @get:Bindable
+    var voteAverage: Double by Delegates.observable(_voteAverage){ _, _, _->notifyPropertyChanged(BR.voteAverage)}
 
     fun setValues(mDetails: MovieDetails) {
         title = mDetails.title

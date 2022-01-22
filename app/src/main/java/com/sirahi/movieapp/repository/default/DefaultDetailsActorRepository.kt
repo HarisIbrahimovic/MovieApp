@@ -23,14 +23,14 @@ constructor(
 
     override suspend fun getActorDetails(id: Int): Response<Actor> {
 
-        var actorDetails: Actor = actorDao.getActor(id)?.toActor()
+        var actorDetails: Actor = actorDao.getActor(id)?.toActor()?:Actor()
 
         return try {
             val remoteResult = apiService.getActorDetails(id, ApiConstants.API_KEY)
             val result = remoteResult.body()
             if (result != null) {
                 actorDao.insertActor(result.toActorEntity())
-                actorDetails = actorDao.getActor(id).toActor()
+                actorDetails = actorDao.getActor(id)?.toActor() ?: Actor()
                 Response.Success(actorDetails)
             } else Response.Error(actorDetails, "Unknown error occurred")
         } catch (e: HttpException) {
@@ -43,7 +43,7 @@ constructor(
     }
 
     override suspend fun getActorMovieCredits(id: Int): Response<List<ActorMovieCredits>> {
-        var actorCredits = actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
+        var actorCredits = actorMovieCreditsDao.getActorCredits(id)?.map { it.toActorMovieCredits() }
 
         return try {
             val remoteResult = apiService.getActorCredits(id, ApiConstants.API_KEY)
@@ -52,8 +52,8 @@ constructor(
                 actorMovieCreditsDao.deleteCredits(id)
                 actorMovieCreditsDao.insertCredits(result)
                 actorCredits =
-                    actorMovieCreditsDao.getActorCredits(id).map { it.toActorMovieCredits() }
-                Response.Success(actorCredits)
+                    actorMovieCreditsDao.getActorCredits(id)?.map { it.toActorMovieCredits() }
+                Response.Success(actorCredits?:ArrayList())
             } else
                 Response.Error(actorCredits, "Unknown error occurred")
         } catch (e: HttpException) {

@@ -14,7 +14,7 @@ interface MediaResultDao {
     suspend fun insertMediaResult(list:List<MediaResultEntity>)
 
     @Query("SELECT * FROM media_result_table where type = :resultType")
-    suspend fun getMediaResult(resultType:String):List<MediaResultEntity>
+    suspend fun getMediaResult(resultType:String):List<MediaResultEntity>?
 
     @Query("DELETE FROM media_result_table WHERE type=:cType")
     fun deleteAllPMovies(cType:String="movie")

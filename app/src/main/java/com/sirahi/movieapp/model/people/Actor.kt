@@ -3,6 +3,7 @@ package com.sirahi.movieapp.model.people
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import kotlin.properties.Delegates
 
 data class Actor(
     var _name: String="",
@@ -18,34 +19,16 @@ data class Actor(
         birthday= actor.birthday
     }
 
+    @get:Bindable
+    var name: String by Delegates.observable(_name){ _, _, _->notifyPropertyChanged(BR.name)}
 
-    var name: String
-        @Bindable get() = _name
-        set(value) {
-            _name = value
-            notifyPropertyChanged(BR.name)
-        }
+    @get:Bindable
+    var birthday: String by Delegates.observable(_birthday){ _, _, _->notifyPropertyChanged(BR.name)}
 
-    var birthday: String
-        @Bindable get() = _birthday
-        set(value) {
-            _birthday = value
-            notifyPropertyChanged(BR.birthday)
-        }
+    @get:Bindable
+    var biography: String by Delegates.observable(_biography){ _, _, _->notifyPropertyChanged(BR.name)}
 
-    var biography: String
-        @Bindable get() = _biography
-        set(value) {
-            _biography = value
-            notifyPropertyChanged(BR.biography)
-        }
-
-    var profilePath: String
-        @Bindable get() = _profilePath
-        set(value) {
-            _profilePath = value
-            notifyPropertyChanged(BR.profilePath)
-        }
-
+    @get:Bindable
+    var profilePath: String by Delegates.observable(_profilePath){ _, _, _->notifyPropertyChanged(BR.name)}
 
 }

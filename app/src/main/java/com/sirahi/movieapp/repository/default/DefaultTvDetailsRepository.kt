@@ -29,8 +29,8 @@ class DefaultTvDetailsRepository
             if (response.isSuccessful && response.body() != null) {
                 tvDetailsDao.deleteTvDetails(id)
                 tvDetailsDao.insertTVDetails(response.body()!!.toTVDetailsEntity())
-                tvDetails = tvDetailsDao.getTvDetails(id).toTVDetails()
-                Response.Success(tvDetails)
+                tvDetails = tvDetailsDao.getTvDetails(id)?.toTVDetails()
+                Response.Success(tvDetails?:TVDetails())
             } else Response.Error(tvDetails, "Unknown error occurred")
         } catch (e: HttpException) {
             Response.Error(tvDetails, "Server error occurred")
@@ -47,7 +47,7 @@ class DefaultTvDetailsRepository
                 castDao.deleteCast(id)
                 castDao.insertCast(response.body()!!.cast.map { it.toMovieCastEntity(id) })
                 tvStars = castDao.getCast(id)?.map { it.toMovieCast() }
-                Response.Success(tvStars)
+                Response.Success(tvStars?:ArrayList())
             } else Response.Error(tvStars, "Unknown error occurred")
         } catch (e: HttpException) {
             Response.Error(tvStars, "Server error occurred")

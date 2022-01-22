@@ -10,6 +10,15 @@
         <variable
             name="fragment"
             type="com.sirahi.movieapp.view.fragment.menu.RatingFragment" />
+
+        <variable
+            name="viewModel"
+            type="com.sirahi.movieapp.presentation.RatingViewModel" />
+
+        <variable
+            name="adapter"
+            type="com.sirahi.movieapp.view.adapters.RatingAdapter" />
+
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -94,6 +103,9 @@
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
+                setRatingAdapter="@{adapter}"
+                setRatingList="@{adapter}"
+                setList="@{viewModel.ratingList}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/constView"

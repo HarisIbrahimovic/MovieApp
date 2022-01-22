@@ -28,7 +28,7 @@ constructor(
     }
 
     private fun setActorCredits(id: Int) =viewModelScope.launch (Dispatchers.IO){
-        incomingActorCredits.setValues(getActorMovieCreditsUseCase.inovke(id))
+        incomingActorCredits.setValues(getActorMovieCreditsUseCase.invoke(id))
     }
 
     private fun setActorDetails(id: Int) = viewModelScope.launch(Dispatchers.IO) {

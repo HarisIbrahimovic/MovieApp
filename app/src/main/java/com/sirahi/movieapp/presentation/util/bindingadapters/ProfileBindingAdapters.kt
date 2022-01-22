@@ -15,6 +15,6 @@ fun setUserListAdapter(view:RecyclerView,adapter:UserListAdapter){
 
 
 @BindingAdapter("setUserList", "setList")
-fun setUserList(view:RecyclerView, adapter: UserListAdapter, list: ArrayList<MediaItem>) {
+fun RecyclerView.setUserList( adapter: UserListAdapter, list: ArrayList<MediaItem>) {
     adapter.setList(list)
 }

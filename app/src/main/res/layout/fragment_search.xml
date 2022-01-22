@@ -19,7 +19,6 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-
         >
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -78,7 +77,7 @@
             android:id="@+id/searchProgressBar"
             app:layout_constraintBottom_toBottomOf="parent"
             android:visibility="gone"
-            app:checkLoadingMediaData="@{viewModel.searchData}"
+            checkLoadingLiveData="@{viewModel.searchData}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"

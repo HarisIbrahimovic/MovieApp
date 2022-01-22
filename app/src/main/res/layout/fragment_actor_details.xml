@@ -18,8 +18,7 @@
 
     </data>
 
-    <FrameLayout
-        android:layout_width="match_parent"
+    <FrameLayout android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/darkerGray"
     tools:context=".view.fragment.menu.details.ActorDetailsFragment">
@@ -50,26 +49,11 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:tint="@color/white" />
 
-            <ImageView
-                android:id="@+id/menuMovieDetails"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_marginEnd="10dp"
-                android:background="#00000000"
-                android:contentDescription="@string/todo"
-                android:elevation="15dp"
-                android:src="@drawable/menu_dots"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:tint="@color/white" />
-
             <TextView
                 android:id="@+id/actorNameDetails"
                 android:layout_width="271dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginEnd="80dp"
                 android:ellipsize="end"
                 android:fontFamily="@font/didact_gothic"
                 android:singleLine="true"
@@ -77,8 +61,6 @@
                 android:textColor="@color/white"
                 android:textSize="20sp"
                 app:layout_constraintBottom_toBottomOf="@+id/backButton"
-                app:layout_constraintEnd_toStartOf="@+id/menuMovieDetails"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toEndOf="@+id/backButton"
                 app:layout_constraintTop_toTopOf="@+id/backButton" />
 
@@ -198,30 +180,6 @@
                     app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
 
-                <TextView
-                    android:id="@+id/tvShows"
-                    android:paddingTop="5dp"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/gray"
-                    android:fontFamily="@font/didact_gothic"
-                    android:paddingStart="15dp"
-                    android:text="@string/tv_shows"
-                    android:textColor="@color/white"
-                    android:textSize="25sp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/actorMoviesRecyclerView"
-                    tools:ignore="RtlSymmetry" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:background="@color/gray"
-                    android:layout_width="match_parent"
-                    android:layout_height="280dp"
-                    android:id="@+id/actorTvRecycler"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tvShows" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

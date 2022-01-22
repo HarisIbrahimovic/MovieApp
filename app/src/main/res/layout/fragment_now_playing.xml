@@ -29,15 +29,14 @@
                 android:id="@+id/constraintLayout4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:layout_constraintBottom_toTopOf="@+id/textView11"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/topBar"
                     android:layout_width="match_parent"
                     android:layout_height="60dp"
-                    android:id="@+id/topBar"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -49,7 +48,7 @@
                         android:layout_marginStart="15dp"
                         android:layout_marginTop="5dp"
                         android:fontFamily="@font/didact_gothic"
-                        android:text="@string/movie"
+                        android:text="Now"
                         android:textColor="@color/white"
                         android:textSize="30sp"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -61,7 +60,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/didact_gothic"
-                        android:text="@string/verse"
+                        android:text="Playing"
                         android:textColor="@color/red"
                         android:textSize="30sp"
                         app:layout_constraintBottom_toBottomOf="@+id/textView2"
@@ -73,98 +72,33 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:layout_marginTop="2dp"
+                        android:layout_marginEnd="15dp"
+                        android:contentDescription="@string/todo"
                         android:src="@drawable/menu_dots"
                         app:layout_constraintBottom_toBottomOf="@+id/textView5"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:layout_marginEnd="15dp"
                         app:layout_constraintTop_toTopOf="@+id/textView5"
-                        app:tint="@color/white"
-                        android:contentDescription="@string/todo" />
+                        app:tint="@color/white" />
 
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:background="@color/black"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/topBar">
-
-                    <ImageView
-                        android:id="@+id/backdropPathImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@color/black"
-                        app:setBackDropNowPlaying="@{viewModel.nowPlayingData}" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:src="@drawable/shadow_effect" />
-
-                </androidx.cardview.widget.CardView>
-
-                <ImageView
-                    android:id="@+id/playButton"
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:contentDescription="@string/todo"
-                    android:elevation="10dp"
-                    android:src="@drawable/playbuttonimg"
-                    app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/cardView"
-                    app:tint="@color/white" />
-
-                <ImageView
-                    android:id="@+id/movieImage"
-                    android:layout_width="100dp"
-                    android:layout_height="160dp"
-                    android:layout_marginStart="16dp"
-                    android:visibility="gone"
-                    android:elevation="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/cardView"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:setImageNowPlaying="@{viewModel.nowPlayingData}" />
-
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <TextView
-                    android:id="@+id/textView11"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="298dp"
-                    android:background="@color/black"
-                    android:fontFamily="@font/didact_gothic"
-                    android:paddingStart="12sp"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/now_playing"
-                    android:textColor="@color/white"
-                    android:textSize="25sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    setDiscoverdapter="@{adapter}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/black"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView11" />
+            <androidx.recyclerview.widget.RecyclerView
+                setDiscoverdapter="@{adapter}"
+                setList="@{viewModel.popularMoviesObservable.mediaList}"
+                setMovieList="@{adapter}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/black"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout4" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

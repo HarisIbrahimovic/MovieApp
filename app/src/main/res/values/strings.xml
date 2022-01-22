@@ -54,4 +54,6 @@
     <string name="dont_have_an_account">Don\'t have an account? Sign in!</string>
     <string name="favorites_no_caps">Favorites</string>
     <string name="watchlist_no_caps">Watchlist</string>
+    <string name="write_your_comment_here">Write your comment here</string>
+    <string name="credits">Credits</string>
 </resources>

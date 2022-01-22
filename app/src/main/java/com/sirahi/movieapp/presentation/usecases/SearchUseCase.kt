@@ -18,14 +18,12 @@ class SearchUseCase @Inject constructor(private val repository: MenuRepository) 
                 response.data?.let { searchList.addAll(it) }
             }
             is Response.Error ->
-                response.errorMessage?.let {
-                    emit(
-                        IncomingMediaData.Failure(
-                            null,
-                            it
-                        )
+                emit(
+                    IncomingMediaData.Failure(
+                        null,
+                        response.errorMessage
                     )
-                }
+                )
         }
         when (val response = repository.getSearchDataTV(query)) {
             is Response.Success -> {
@@ -33,14 +31,12 @@ class SearchUseCase @Inject constructor(private val repository: MenuRepository) 
                 emit(IncomingMediaData.Success(searchList))
             }
             is Response.Error ->
-                response.errorMessage?.let {
-                    emit(
-                        IncomingMediaData.Failure(
-                            null,
-                            it
-                        )
+                emit(
+                    IncomingMediaData.Failure(
+                        null,
+                        response.errorMessage
                     )
-                }
+                )
         }
     }
 }

@@ -3,41 +3,25 @@ package com.sirahi.movieapp.model
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import kotlin.properties.Delegates
 
-data class LoginUiState(
-    var _username: String = "",
-    var _email: String = "",
-    var _password: String = "",
-) : BaseObservable() {
+class LoginUiState: BaseObservable() {
 
-
-    var username: String
-        @Bindable get() = _username
-        set(value) {
-            _username = value
-            notifyPropertyChanged(BR.username)
-        }
-
-    var email: String
-        @Bindable get() = _email
-        set(value) {
-            _email = value
-            notifyPropertyChanged(BR.email)
-        }
+    @get:Bindable
+    var username by Delegates.observable(""){_,_,_->notifyPropertyChanged(BR.username)}
 
 
-    var password: String
-        @Bindable get() = _password
-        set(value) {
-            _password = value
-            notifyPropertyChanged(BR.password)
-        }
+    @get:Bindable
+    var email by Delegates.observable(""){_,_,_->notifyPropertyChanged(BR.email)}
+
+
+    @get:Bindable
+    var password by Delegates.observable(""){_,_,_->notifyPropertyChanged(BR.password)}
 
     fun setValues() {
         username = ""
         email = ""
         password = ""
     }
-
 
 }

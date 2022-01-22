@@ -50,24 +50,14 @@ class ProfileFragment : Fragment(), UserListAdapter.OnUserListListener {
         if (type == "tv")
             navigateTo(navController, R.id.action_profileFragment_to_TVDetailsFragment, "tvId", id)
         else
-            navigateTo(
-                navController,
-                R.id.action_profileFragment_to_movieDetailsFragment,
-                "movieId",
-                id
-            )
+            navigateTo(navController, R.id.action_profileFragment_to_movieDetailsFragment, "movieId", id)
     }
 
     override fun onWatchUserListClickListener(id: Int, type: String) {
         if (type == "tv")
             navigateTo(navController, R.id.action_profileFragment_to_TVDetailsFragment, "tvId", id)
         else
-            navigateTo(
-                navController,
-                R.id.action_profileFragment_to_movieDetailsFragment,
-                "movieId",
-                id
-            )
+            navigateTo(navController, R.id.action_profileFragment_to_movieDetailsFragment, "movieId", id)
     }
 
     fun signOut() {

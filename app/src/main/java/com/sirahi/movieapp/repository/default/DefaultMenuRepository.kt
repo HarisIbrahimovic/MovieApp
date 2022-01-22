@@ -23,8 +23,8 @@ class DefaultMenuRepository @Inject constructor(
     private val auth = FirebaseAuth.getInstance()
 
 
-    override suspend fun getMovies(category: String): Response<List<MediaResult>?> {
-        var mediaResult = mediaDao.getMediaResult("movie").map { it.toMediaResult() }
+    override suspend fun getMovies(category: String): Response<List<MediaResult>> {
+        var mediaResult = mediaDao.getMediaResult("movie")?.map { it.toMediaResult() }
         return try {
             val remoteMediaResult = apiService.getMovies(category, ApiConstants.API_KEY)
             val listMediaResult = remoteMediaResult.body()?.results
@@ -36,8 +36,8 @@ class DefaultMenuRepository @Inject constructor(
                         "movie"
                     )
                 })
-                mediaResult = mediaDao.getMediaResult("movie").map { it.toMediaResult() }
-                Response.Success(mediaResult)
+                mediaResult = mediaDao.getMediaResult("movie")?.map { it.toMediaResult() }
+                Response.Success(mediaResult?:ArrayList())
             } else Response.Error(listMediaResult, "Unknown error occurred")
         } catch (e: HttpException) {
             Response.Error(mediaResult, "Network error occurred")
@@ -46,8 +46,8 @@ class DefaultMenuRepository @Inject constructor(
         }
     }
 
-    override suspend fun getTv(category: String): Response<List<MediaResult>?> {
-        var mediaResult = mediaDao.getMediaResult("TV").map { it.toMediaResult() }
+    override suspend fun getTv(category: String): Response<List<MediaResult>> {
+        var mediaResult = mediaDao.getMediaResult("TV")?.map { it.toMediaResult() }
         return try {
             val remoteMediaResult = apiService.getTV(category, ApiConstants.API_KEY)
             val listMediaResult = remoteMediaResult.body()?.results
@@ -59,8 +59,8 @@ class DefaultMenuRepository @Inject constructor(
                         "TV"
                     )
                 })
-                mediaResult = mediaDao.getMediaResult("TV").map { it.toMediaResult() }
-                Response.Success(mediaResult)
+                mediaResult = mediaDao.getMediaResult("TV")?.map { it.toMediaResult() }
+                Response.Success(mediaResult?:ArrayList())
             } else
                 Response.Error(mediaResult, "Unknown error occurred")
         } catch (e: HttpException) {
@@ -71,8 +71,8 @@ class DefaultMenuRepository @Inject constructor(
     }
 
 
-    override suspend fun discoverMovies(id: Int, name: String): Response<List<MediaResult>?> {
-        var mediaResult = mediaDao.getMediaResult(name).map { it.toMediaResult() }
+    override suspend fun discoverMovies(id: Int, name: String): Response<List<MediaResult>> {
+        var mediaResult = mediaDao.getMediaResult(name)?.map { it.toMediaResult() }
         return try {
             val remoteMediaResult = apiService.discoverMovies(id, ApiConstants.API_KEY)
             val listMediaResult = remoteMediaResult.body()?.results
@@ -84,9 +84,9 @@ class DefaultMenuRepository @Inject constructor(
                         name
                     )
                 })
-                mediaResult = mediaDao.getMediaResult(name).map { it.toMediaResult() }
-                Response.Success(mediaResult)
-            } else Response.Error(mediaResult, "Unknown error occurred")
+                mediaResult = mediaDao.getMediaResult(name)?.map { it.toMediaResult() }
+                Response.Success(mediaResult?:ArrayList())
+            } else Response.Error(mediaResult?:ArrayList(), "Unknown error occurred")
         } catch (e: HttpException) {
             Response.Error(mediaResult, "Server error occurred")
         } catch (e: IOException) {
@@ -131,7 +131,7 @@ class DefaultMenuRepository @Inject constructor(
         return try {
             val snapshotList = FirebaseDatabase.getInstance()
                 .getReference("Users")
-                .child(auth.currentUser!!.uid)
+                .child(auth.currentUser?.uid?:"")
                 .child("Watchlist")
                 .get()
                 .await()
@@ -148,7 +148,7 @@ class DefaultMenuRepository @Inject constructor(
         return try {
             val snapshotList = FirebaseDatabase.getInstance()
                 .getReference("Users")
-                .child(auth.currentUser!!.uid)
+                .child(auth.currentUser?.uid?:"")
                 .child("Favorites")
                 .get()
                 .await()
@@ -157,6 +157,20 @@ class DefaultMenuRepository @Inject constructor(
             arrayList
         } catch (e: Exception) {
             arrayList
+        }
+    }
+
+    override suspend fun getUserName(): String {
+        return try {
+            val snapshot = FirebaseDatabase.getInstance()
+                .getReference("Users")
+                .child(auth.currentUser?.uid?:"")
+                .child("username")
+                .get()
+                .await()
+            snapshot.getValue(String::class.java)?:"nsad"
+        } catch (e: Exception) {
+           ""
         }
     }
 

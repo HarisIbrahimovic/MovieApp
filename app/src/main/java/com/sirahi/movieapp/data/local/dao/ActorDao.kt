@@ -14,7 +14,7 @@ interface ActorDao {
     suspend fun insertActor(actorEntity: ActorEntity)
 
     @Query("SELECT * FROM actor_table WHERE id = :inputId")
-    suspend fun getActor(inputId:Int):ActorEntity
+    suspend fun getActor(inputId:Int):ActorEntity?
 
 
 }

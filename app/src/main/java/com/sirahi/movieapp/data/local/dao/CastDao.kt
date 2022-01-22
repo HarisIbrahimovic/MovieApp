@@ -15,6 +15,6 @@ interface CastDao {
     suspend fun deleteCast(id:Int)
 
     @Query("SELECT * FROM cast_table WHERE movieId = :id")
-    suspend fun getCast(id:Int):List<CastEntity>
+    suspend fun getCast(id:Int):List<CastEntity>?
 
 }

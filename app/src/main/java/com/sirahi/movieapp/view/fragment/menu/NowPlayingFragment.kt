@@ -39,13 +39,6 @@ class NowPlayingFragment : Fragment(), VerticalMediaAdapter.OnVerticalMediaClick
         vAdapter = VerticalMediaAdapter(requireContext(), this)
         navController = Navigation.findNavController(view)
         binding.adapter = vAdapter
-        observe()
-    }
-
-    private fun observe() {
-        viewModel.nowPlayingData.observe(viewLifecycleOwner, {
-            it.data?.let { list -> vAdapter.setList(list) }
-        })
     }
 
     override fun onVerticalItemClicked(id: Int, type: String) {

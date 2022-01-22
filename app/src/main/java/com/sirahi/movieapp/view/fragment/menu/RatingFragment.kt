@@ -20,11 +20,10 @@ class RatingFragment : Fragment() {
 
     private val viewModel: RatingViewModel by viewModels()
 
-    private lateinit var submitRatingBinding: RatingCustomViewBinding
+    private var submitRatingBinding: RatingCustomViewBinding?=null
     private lateinit var binding: FragmentRatingBinding
     private lateinit var ratingAdapter: RatingAdapter
 
-    private val groupParent: ViewGroup? = null
     private lateinit var dialog: AlertDialog
     private lateinit var myView: View
     private var type: String = ""
@@ -44,24 +43,25 @@ class RatingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.fragment = this
+        binding.viewModel = viewModel
         type = arguments?.getString("type") ?: ""
+        viewModel.type = type
         arguments?.getInt("movieId")?.let { viewModel.initData(it, type) }
         setUpRecyclerView()
         setRatingWindow()
     }
 
-
     fun openRatingView() {
         dialog.let {
             it.show()
-            addRatingViewOnClicks()
+            setUpRatingView()
         }
     }
 
     private fun setUpRecyclerView() {
         ratingAdapter = RatingAdapter(requireContext())
-        binding.ratingRecView.adapter = ratingAdapter
-        viewModel.movieRating.observe(viewLifecycleOwner, {
+        binding.adapter = ratingAdapter
+        viewModel.ratingList.observe(viewLifecycleOwner, {
             if (it != null)
                 ratingAdapter.setList(it)
         })
@@ -70,24 +70,19 @@ class RatingFragment : Fragment() {
     private fun setRatingWindow() {
         val myDialog = AlertDialog.Builder(activity)
         val inflater = LayoutInflater.from(activity)
-        myView = inflater.inflate(R.layout.rating_custom_view, groupParent)
+        myView = inflater.inflate(R.layout.rating_custom_view, null)
         myDialog.setView(myView)
         dialog = myDialog.create()
     }
 
-    private fun addRatingViewOnClicks() {
-        submitRatingBinding = RatingCustomViewBinding.bind(myView)
-        submitRatingBinding.cancelButton.setOnClickListener { dialog.dismiss() }
-        submitRatingBinding.submitRatingButton.setOnClickListener {
-            arguments?.getInt("movieId")?.let { movieId ->
-                viewModel.addRating(
-                    movieId,
-                    submitRatingBinding.ratingCommentEditText.text.toString(),
-                    submitRatingBinding.ratingBar.progress.toDouble(),
-                    type
-                )
-                dialog.dismiss()
-            }
-        }
+    private fun setUpRatingView() {
+        submitRatingBinding = DataBindingUtil.bind(myView)
+        submitRatingBinding?.viewModel = viewModel
+        submitRatingBinding?.fragment = this
     }
+
+    fun closeWindow(){
+        dialog.dismiss()
+    }
+
 }

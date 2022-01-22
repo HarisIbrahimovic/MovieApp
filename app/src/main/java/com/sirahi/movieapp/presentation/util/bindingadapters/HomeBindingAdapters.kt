@@ -1,21 +1,15 @@
 package com.sirahi.movieapp.presentation.util.bindingadapters
 
 import android.view.View
-import android.widget.ImageView
-import android.widget.ProgressBar
-import android.widget.TextView
+import android.widget.RatingBar
 import androidx.databinding.BindingAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.sirahi.movieapp.data.remote.util.ApiConstants
+import com.sirahi.movieapp.data.firebase.Rating
+import com.sirahi.movieapp.model.MediaResult
+import com.sirahi.movieapp.presentation.MenuViewModel
+import com.sirahi.movieapp.presentation.RatingViewModel
 import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMediaData
-import com.sirahi.movieapp.presentation.util.incomingdata.IncomingMovieDetails
-import com.sirahi.movieapp.view.adapters.GenreAdapter
-import com.sirahi.movieapp.view.adapters.MovieResultAdapter
-import com.sirahi.movieapp.view.adapters.TvResultAdapter
-import com.sirahi.movieapp.view.adapters.VerticalMediaAdapter
-import kotlinx.coroutines.flow.StateFlow
+import com.sirahi.movieapp.view.adapters.*
 
 
 
@@ -39,20 +33,51 @@ fun setGenreAdapter(view: RecyclerView, discoverAdapter: VerticalMediaAdapter) {
     view.adapter = discoverAdapter
 }
 
-@BindingAdapter("checkLoadingMediaData")
-fun checkLoadingMediaData(view: View, incomingMediaData: IncomingMediaData?) {
-    view.visibility = when (incomingMediaData) {
-        is IncomingMediaData.Loading -> View.VISIBLE
-        else -> View.GONE
-    }
+@BindingAdapter("checkLoading")
+fun checkLoadingMediaData(view: View, value: Boolean) {
+    view.visibility = if (value)  View.VISIBLE else View.GONE
+}
+
+@BindingAdapter("checkLoadingLiveData")
+fun checkLoadingLiveData(view:View, incomingMediaData: IncomingMediaData?){
+    if(incomingMediaData is IncomingMediaData.Loading)view.visibility = View.VISIBLE
+    else view.visibility = View.GONE
 }
 
 
-@BindingAdapter("checkLoadingMediaData")
-fun checkLoadingMediaData(view: View, incomingMediaData: StateFlow<IncomingMediaData>) {
-    view.visibility = when (incomingMediaData.value) {
-        is IncomingMediaData.Loading -> View.VISIBLE
-        else -> View.GONE
+@BindingAdapter("setMovieList", "setList")
+fun RecyclerView.setMovieList( adapter: MovieResultAdapter, list: ArrayList<MediaResult>) {
+    adapter.setList(list)
+}
+
+@BindingAdapter("setTvList", "setList")
+fun RecyclerView.setTvList( adapter: TvResultAdapter, list: ArrayList<MediaResult>) {
+    adapter.setList(list)
+}
+
+@BindingAdapter("setRatingAdapter")
+fun setRatingAdapter(view: RecyclerView, adapter: RatingAdapter) {
+    view.adapter=adapter
+}
+
+
+@BindingAdapter("setRatingList", "setList")
+fun RecyclerView.setTvList( adapter: RatingAdapter, newList: List<Rating>?) {
+    if (newList != null) {
+        adapter.setList(newList)
+    }
+}
+
+@BindingAdapter("setRating")
+fun setRating(view:RatingBar,score:Double){
+    view.progress=score.toInt()
+}
+
+
+@BindingAdapter("onRatingChanged")
+fun onRatingChanged(view:RatingBar,viewModel: RatingViewModel){
+    view.setOnRatingBarChangeListener { _, rating, _ ->
+        viewModel.ratingValue.value=rating
     }
 }
 

@@ -1,4 +1,4 @@
-package com.sirahi.movieapp.presentation.usecases.details
+package com.sirahi.movieapp.presentation.usecases.details.movies
 
 import com.sirahi.movieapp.model.movie.MovieDetails
 import com.sirahi.movieapp.presentation.util.Response

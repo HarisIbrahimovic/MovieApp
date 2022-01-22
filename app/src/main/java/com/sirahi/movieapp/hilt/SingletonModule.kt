@@ -50,13 +50,6 @@ object SingletonModule {
     fun providesActorMovieCreditsDao(localDatabase: LocalDatabase): ActorMovieCreditsDao =
         localDatabase.actorMovieCreditsDao()
 
-
-    @Singleton
-    @Provides
-    fun providesActorTvCreditsDao(localDatabase: LocalDatabase): ActorTvCreditsDao =
-        localDatabase.actorTvCreditsDao()
-
-
     @Singleton
     @Provides
     fun providesCastDao(localDatabase: LocalDatabase): CastDao = localDatabase.castDao()

@@ -4,7 +4,9 @@ import com.sirahi.movieapp.presentation.usecases.*
 import com.sirahi.movieapp.presentation.usecases.details.*
 import com.sirahi.movieapp.presentation.usecases.details.actor.GetActorDetailsUseCase
 import com.sirahi.movieapp.presentation.usecases.details.actor.GetActorMovieCreditsUseCase
+import com.sirahi.movieapp.presentation.usecases.details.movies.GetMovieDetailsUseCase
 import com.sirahi.movieapp.presentation.usecases.details.tv.GetTvDetailsUseCase
+import com.sirahi.movieapp.presentation.usecases.ratings.AddRatingUseCase
 import com.sirahi.movieapp.presentation.usecases.signup.SignUpUseCase
 import com.sirahi.movieapp.repository.*
 import dagger.Module
@@ -41,9 +43,12 @@ object LifeCycleModule {
         UserListsUseCase(repository)
 
     @Provides
+    fun provideGetUserNameUseCase(repository: MenuRepository): GetUserNameUseCase =
+        GetUserNameUseCase(repository)
+
+    @Provides
     fun provideSignUpUseCase(repository: SignUpRepository): SignUpUseCase =
         SignUpUseCase(repository)
-
 
     @Provides
     fun provideMovieDetailsUseCase(repository: DetailMovieRepository): GetMovieDetailsUseCase =
@@ -70,6 +75,9 @@ object LifeCycleModule {
     fun provideGetTvDetailsUseCase(repository: DetailsTvRepository):GetTvDetailsUseCase=
         GetTvDetailsUseCase(repository)
 
+    @Provides
+    fun provideRatingUseCase(repository:RatingRepository):AddRatingUseCase=
+        AddRatingUseCase(repository)
 
 
 }

@@ -14,7 +14,7 @@ interface ActorMovieCreditsDao {
     suspend fun insertCredits(actorMovieCredits: List<ActorMovieCreditsEntity>)
 
     @Query("SELECT * FROM actor_movie_credits_table WHERE actorId = :inputId")
-    suspend fun getActorCredits(inputId:Int):List<ActorMovieCreditsEntity>
+    suspend fun getActorCredits(inputId:Int):List<ActorMovieCreditsEntity>?
 
     @Query("DELETE FROM actor_movie_credits_table WHERE actorId =:id")
     suspend fun deleteCredits(id: Int)

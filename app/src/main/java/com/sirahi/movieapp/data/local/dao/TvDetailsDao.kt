@@ -12,7 +12,7 @@ interface TvDetailsDao {
     suspend fun insertTVDetails(tvDetailsEntity: TVDetailsEntity)
 
     @Query("SELECT * FROM tv_details_table WHERE id =:inputId")
-    suspend fun getTvDetails(inputId:Int):TVDetailsEntity
+    suspend fun getTvDetails(inputId:Int):TVDetailsEntity?
 
     @Query("DELETE FROM tv_details_table WHERE id =:inputId")
     suspend fun deleteTvDetails(inputId: Int)

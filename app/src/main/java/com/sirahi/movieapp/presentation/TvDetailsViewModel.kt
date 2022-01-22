@@ -20,8 +20,8 @@ class TvDetailsViewModel @Inject constructor(
 ) :
     ViewModel() {
 
-    val tvDetailsObservable = TVDetails()
     val tvCastObservable = IncomingMediaCast()
+    val tvDetailsObservable = TVDetails()
     private var tvId = -1
 
     fun initData(id: Int) {
@@ -40,12 +40,12 @@ class TvDetailsViewModel @Inject constructor(
         tvCastObservable.setValues(getTvCastUseCase.invoke(id))
     }
 
-    fun addToFavorites() {
-        addToWatchlistTvUseCase.addToFavorites(tvDetailsObservable,tvId)
+    fun addToWatchList() {
+        addToWatchlistTvUseCase.addToWatchlist(tvDetailsObservable, tvId)
     }
 
-    fun addToWatchList() {
-        addToWatchlistTvUseCase.addToWatchlist(tvDetailsObservable,tvId)
+    fun addToFavorites() {
+        addToWatchlistTvUseCase.addToFavorites(tvDetailsObservable, tvId)
     }
 
 }

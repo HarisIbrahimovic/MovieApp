@@ -48,13 +48,9 @@ class SearchFragment : Fragment(), VerticalMediaAdapter.OnVerticalMediaClicked {
         })
     }
 
-
     override fun onVerticalItemClicked(id: Int, type: String) {
-        if (type != "tv") {
-            navigateTo(navController,R.id.action_searchFragment_to_movieDetailsFragment,"movieId",id)
-        } else {
-            navigateTo(navController,R.id.action_searchFragment_to_TVDetailsFragment,"tvId",id)
-        }
+        if (type != "tv") navigateTo(navController,R.id.action_searchFragment_to_movieDetailsFragment,"movieId",id)
+        else navigateTo(navController,R.id.action_searchFragment_to_TVDetailsFragment,"tvId",id)
     }
 
 }

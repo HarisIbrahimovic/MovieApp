@@ -13,7 +13,7 @@ fun setActorMovieCreditsAdapter(view: RecyclerView, adapter: ActorMovieCreditsAd
 
 
 @BindingAdapter("setMovieList", "setList")
-fun setCastList(view:RecyclerView, adapter: ActorMovieCreditsAdapter, list: ArrayList<ActorMovieCredits>) {
+fun RecyclerView.setCastList( adapter: ActorMovieCreditsAdapter, list: ArrayList<ActorMovieCredits>) {
     adapter.setList(list)
 }
 

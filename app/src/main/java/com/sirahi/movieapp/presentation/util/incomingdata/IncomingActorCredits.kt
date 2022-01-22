@@ -4,29 +4,24 @@ import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.sirahi.movieapp.model.people.ActorMovieCredits
+import kotlin.properties.Delegates
 
-data class IncomingActorCredits(
-    var _creditList: ArrayList<ActorMovieCredits> = ArrayList(),
-    var _errorMessage: String = ""
-) : BaseObservable() {
+class IncomingActorCredits : BaseObservable() {
 
     fun setValues(incomingData: IncomingActorCredits) {
         creditList = incomingData.creditList
         errorMessage = incomingData.errorMessage
     }
 
-    var creditList: ArrayList<ActorMovieCredits>
-        @Bindable get() = _creditList
-        set(value) {
-            _creditList = value
-            notifyPropertyChanged(BR.creditList)
-        }
 
-    var errorMessage: String
-        @Bindable get() = _errorMessage
-        set(value) {
-            _errorMessage = value
-            notifyPropertyChanged(BR.errorMessage)
-        }
+    @get:Bindable
+    var creditList by Delegates.observable(ArrayList<ActorMovieCredits>()) { _, _, _ ->
+        notifyPropertyChanged(
+            BR.creditList
+        )
+    }
+
+    @get:Bindable
+    var errorMessage by Delegates.observable("") { _, _, _ -> notifyPropertyChanged(BR.creditList) }
 
 }

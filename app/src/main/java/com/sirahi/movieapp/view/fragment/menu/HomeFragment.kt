@@ -1,5 +1,6 @@
 package com.sirahi.movieapp.view.fragment.menu
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,7 @@ class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.
         binding.movieResultAdapter = mAdapter
         binding.tvResultAdapter = tvAdapter
         binding.genreAdapter = genreAdapter
+        binding.fragment = this
     }
 
     private fun observe() {
@@ -65,17 +67,18 @@ class HomeFragment : Fragment(), MovieResultAdapter.ClickListener, GenreAdapter.
             genreAdapter.setList(it)
         })
 
-        viewModel.popularMoviesData.observe(viewLifecycleOwner, {
-            it.data?.let { list -> mAdapter.setList(list) }
-        })
-
-        viewModel.popularTvData.observe(viewLifecycleOwner, {
-            it.data?.let { list -> tvAdapter.setList(list) }
-        })
-
         viewModel.discoverData.observe(viewLifecycleOwner, {
             it.data?.let { list -> discoverAdapter.setList(list) }
         })
+    }
+
+    fun openCredits(){
+        val myDialog = AlertDialog.Builder(activity)
+        val inflater = LayoutInflater.from(activity)
+        val myView = inflater.inflate(R.layout.credits_custom_view, null)
+        myDialog.setView(myView)
+        val dialog: AlertDialog = myDialog.create()
+        dialog.show()
     }
 
     override fun genreClicked(id: Int) {

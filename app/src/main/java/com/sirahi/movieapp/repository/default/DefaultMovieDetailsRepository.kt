@@ -24,14 +24,14 @@ constructor(
 ) : DetailMovieRepository {
 
     override suspend fun getMovieDetails(id: Int): Response<MovieDetails> {
-        var detailsResult: MovieDetails = movieDetailsDao.getMovieData(id)?.toMovieDetails()
+        var detailsResult: MovieDetails = movieDetailsDao.getMovieData(id)?.toMovieDetails()?:MovieDetails()
         return try {
             val response = apiService.getSingleMovie(id.toString(), ApiConstants.API_KEY)
             val result = response.body()?.toMovieDetailsEntity()
             if (result != null) {
                 movieDetailsDao.deleteMovie(id)
                 movieDetailsDao.insertMovieDetails(result)
-                detailsResult = movieDetailsDao.getMovieData(id).toMovieDetails()
+                detailsResult = movieDetailsDao.getMovieData(id)?.toMovieDetails()?:MovieDetails()
                 Response.Success(detailsResult)
             } else Response.Error(detailsResult, "Unknown error occurred")
         } catch (e: HttpException) {
@@ -43,7 +43,7 @@ constructor(
 
     override suspend fun getMovieCredits(id: Int): Response<List<MovieCast>> {
 
-        var cast = castDao.getCast(id).map { it.toMovieCast() }
+        var cast = castDao.getCast(id)?.map { it.toMovieCast() }?:ArrayList()
 
         return try {
             val response = apiService.getMovieCredits(id.toString(), ApiConstants.API_KEY)
@@ -51,7 +51,7 @@ constructor(
             if (result != null) {
                 castDao.deleteCast(id)
                 castDao.insertCast(result.map { it.toMovieCastEntity(id) })
-                cast = castDao.getCast(id).map { it.toMovieCast() }
+                cast = castDao.getCast(id)?.map { it.toMovieCast() } ?:ArrayList()
                 Response.Success(cast)
             } else Response.Error(cast, "Unknown error occurred")
 

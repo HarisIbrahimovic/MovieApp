@@ -4,47 +4,36 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sirahi.movieapp.data.firebase.Rating
+import com.sirahi.movieapp.model.RatingUIState
+import com.sirahi.movieapp.presentation.usecases.ratings.AddRatingUseCase
 import com.sirahi.movieapp.repository.RatingRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class RatingViewModel @Inject constructor(
-    private val repository: RatingRepository
+    private val repository: RatingRepository,
+    private val addRatingUseCase: AddRatingUseCase
 ) : ViewModel() {
 
+    private var mediaId = -1
+    lateinit var type: String
+    lateinit var ratingList: LiveData<List<Rating>>
     private lateinit var userName: LiveData<String>
-    lateinit var movieRating: LiveData<List<Rating>>
+    var ratingValue = RatingUIState()
 
     fun initData(id: Int, type: String) {
-        movieRating = repository.getMovieRatings(id, type)
+        mediaId = id
+        ratingList = repository.getMovieRatings(id, type)
         viewModelScope.launch(Dispatchers.IO) {
             repository.setMovieRatings(id, type)
             userName = repository.getUserName()
         }
     }
 
-
-    private fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String {
-        val formatter = SimpleDateFormat(format, locale)
-        return formatter.format(this)
+    fun addRating() = viewModelScope.launch(Dispatchers.IO) {
+        addRatingUseCase.invoke(mediaId, ratingValue.comment, ratingValue.value.toDouble(), userName.value ?: "", type)
     }
-
-    private fun getCurrentDateTime(): Date {
-        return Calendar.getInstance().time
-    }
-
-    fun addRating(movieId: Int, comment: String, value: Double, type: String) =
-        viewModelScope.launch(Dispatchers.IO) {
-            val date = getCurrentDateTime()
-            val dateInString = date.toString("dd/MM/yyyy")
-            val currentUserName = userName.value
-            val rating = currentUserName?.let { Rating(it, dateInString, comment, value) }
-            if (value != 0.0 && comment != "")
-                rating?.let { repository.addMovieRating(movieId, it, type) }
-        }
 }

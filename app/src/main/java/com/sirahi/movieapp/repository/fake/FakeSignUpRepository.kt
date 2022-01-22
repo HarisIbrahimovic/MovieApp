@@ -4,6 +4,7 @@ import com.sirahi.movieapp.repository.SignUpRepository
 
 class FakeSignUpRepository : SignUpRepository {
 
+    var loginState = false
 
     override suspend fun registerUser(username: String, email: String, password: String): Boolean {
         return email == "admin@gmail.com" && password == "admin123"
@@ -18,7 +19,7 @@ class FakeSignUpRepository : SignUpRepository {
     }
 
     override suspend fun checkUser(): Boolean {
-        return false
+        return loginState
     }
 
 }
